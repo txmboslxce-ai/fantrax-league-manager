@@ -1,0 +1,772 @@
+{
+  "schedule": {
+    "group_stage": [
+      19,
+      20,
+      21
+    ],
+    "playoff": {
+      "leg1": 23,
+      "leg2": 24
+    },
+    "round_of_16": {
+      "leg1": 26,
+      "leg2": 27
+    },
+    "quarter_final": {
+      "leg1": 29,
+      "leg2": 30
+    },
+    "semi_final": {
+      "leg1": 32,
+      "leg2": 33
+    },
+    "final": {
+      "leg1": 35,
+      "leg2": 36
+    }
+  },
+  "team_ids": {
+    "premier_league": {
+      "Back Fives Matter": "buh7gx3emc1y127b",
+      "The Mask of Yoro": "1iripq9xmc2328x0",
+      "Scharshank Redemption": "l7y2f1nwmc1y127b",
+      "West Country Wanderers": "y8p0b7dhmc1y127b",
+      "Bayern Bru": "j4uwveqkmc1y127b",
+      "CR7 \ud83d\udc10": "0qa4vnovmc1y127b",
+      "Pep and the City": "adwrwl4vmc1y127c",
+      "Dango Unchained \ud83c\udfc6": "f05x9dk7mc1y127b",
+      "Wirtz Case Scenario": "hlx7c36imc1y127c",
+      "Chicken Tikka MoSalah": "l90gjsbfmc2328x0",
+      "Parachute FC": "1u56xcmpmc1y127c",
+      "Freedyfloundering": "0fpod9dqmc1y127b"
+    },
+    "championship": {
+      "Altrincham Athletic": "59exo6ggmc1y029z",
+      "Dunc and disorderly": "7qgmju8cmc1y029z",
+      "Amartey McFly": "dyijbhb6mc231lgm",
+      "Roncy Rovers": "0v9zffabmc1y029z",
+      "Flatlanders FC": "k15r5h3ymc1y029z",
+      "Okanagan Athletic": "vke7s73tmc1y029z",
+      "Team Rebrand FC United": "znnz3gicmc1y029z",
+      "Grand River Rapids": "ykhysfwrmc1y029z",
+      "Titanic FC": "p9au1qsamc231lgn",
+      "Los Tibbles": "p0dpfop7mc1y029z",
+      "Blackburn Rovers": "nf3lajo5mc1y029z",
+      "Matt Ritchie GOAT": "qnzeiykwmc2gcdl3"
+    },
+    "league_one": {
+      "Samgwest": "jfvxrwwkmchi2byh",
+      "tlivesey789": "h3qeclcnmd5dxovt",
+      "006_5": "osw3631umdabkjaf",
+      "Plowry89": "ris8061gmdsr21tx",
+      "Goonersaurus": "mz25n6llmcdjgldr",
+      "The Billygoats": "yehqkl27md6sqj6d",
+      "Jibbledinho": "t1i0wwwtmc3gswcr",
+      "GlacierCampers": "zvw3mtldmc2aruod",
+      "Blinked FC": "nh7qp7obmd8zd2xn",
+      "Jbizz9745": "a3epi4rnmd8yujxf",
+      "KHay FC": "k04bc3j1md8yys3n",
+      "frizk": "scevbtv5mdu8o35t"
+    }
+  },
+  "groups": {
+    "A": {
+      "teams": [
+        {
+          "name": "006_5",
+          "id": "osw3631umdabkjaf",
+          "league": "league_one"
+        },
+        {
+          "name": "Altrincham Athletic",
+          "id": "59exo6ggmc1y029z",
+          "league": "championship"
+        },
+        {
+          "name": "Dango Unchained \ud83c\udfc6",
+          "id": "f05x9dk7mc1y127b",
+          "league": "premier_league"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "f05x9dk7mc1y127b",
+          "home_score": 75.75,
+          "away": "59exo6ggmc1y029z",
+          "away_score": 98.5
+        },
+        {
+          "gw": 20,
+          "home": "osw3631umdabkjaf",
+          "home_score": 82.0,
+          "away": "f05x9dk7mc1y127b",
+          "away_score": 75.0
+        },
+        {
+          "gw": 21,
+          "home": "59exo6ggmc1y029z",
+          "home_score": 106.25,
+          "away": "osw3631umdabkjaf",
+          "away_score": 131.75
+        }
+      ]
+    },
+    "B": {
+      "teams": [
+        {
+          "name": "Okanagan Athletic",
+          "id": "vke7s73tmc1y029z",
+          "league": "championship"
+        },
+        {
+          "name": "Scharshank Redemption",
+          "id": "l7y2f1nwmc1y127b",
+          "league": "premier_league"
+        },
+        {
+          "name": "Plowry89",
+          "id": "ris8061gmdsr21tx",
+          "league": "league_one"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "vke7s73tmc1y029z",
+          "home_score": 115.0,
+          "away": "ris8061gmdsr21tx",
+          "away_score": 69.0
+        },
+        {
+          "gw": 20,
+          "home": "l7y2f1nwmc1y127b",
+          "home_score": 102.75,
+          "away": "vke7s73tmc1y029z",
+          "away_score": 68.75
+        },
+        {
+          "gw": 21,
+          "home": "ris8061gmdsr21tx",
+          "home_score": 102.25,
+          "away": "l7y2f1nwmc1y127b",
+          "away_score": 73.5
+        }
+      ]
+    },
+    "C": {
+      "teams": [
+        {
+          "name": "KHay FC",
+          "id": "k04bc3j1md8yys3n",
+          "league": "league_one"
+        },
+        {
+          "name": "Grand River Rapids",
+          "id": "ykhysfwrmc1y029z",
+          "league": "championship"
+        },
+        {
+          "name": "Chicken Tikka MoSalah",
+          "id": "l90gjsbfmc2328x0",
+          "league": "premier_league"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "k04bc3j1md8yys3n",
+          "home_score": 104.75,
+          "away": "l90gjsbfmc2328x0",
+          "away_score": 77.0
+        },
+        {
+          "gw": 20,
+          "home": "ykhysfwrmc1y029z",
+          "home_score": 76.25,
+          "away": "k04bc3j1md8yys3n",
+          "away_score": 79.0
+        },
+        {
+          "gw": 21,
+          "home": "l90gjsbfmc2328x0",
+          "home_score": 35.25,
+          "away": "ykhysfwrmc1y029z",
+          "away_score": 86.5
+        }
+      ]
+    },
+    "D": {
+      "teams": [
+        {
+          "name": "Back Fives Matter",
+          "id": "buh7gx3emc1y127b",
+          "league": "premier_league"
+        },
+        {
+          "name": "The Billygoats",
+          "id": "yehqkl27md6sqj6d",
+          "league": "league_one"
+        },
+        {
+          "name": "Team Rebrand FC United",
+          "id": "znnz3gicmc1y029z",
+          "league": "championship"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "buh7gx3emc1y127b",
+          "home_score": 91.75,
+          "away": "znnz3gicmc1y029z",
+          "away_score": 74.0
+        },
+        {
+          "gw": 20,
+          "home": "yehqkl27md6sqj6d",
+          "home_score": 80.75,
+          "away": "buh7gx3emc1y127b",
+          "away_score": 92.75
+        },
+        {
+          "gw": 21,
+          "home": "znnz3gicmc1y029z",
+          "home_score": 101.75,
+          "away": "yehqkl27md6sqj6d",
+          "away_score": 102.25
+        }
+      ]
+    },
+    "E": {
+      "teams": [
+        {
+          "name": "Wirtz Case Scenario",
+          "id": "hlx7c36imc1y127c",
+          "league": "premier_league"
+        },
+        {
+          "name": "frizk",
+          "id": "scevbtv5mdu8o35t",
+          "league": "league_one"
+        },
+        {
+          "name": "Blackburn Rovers",
+          "id": "nf3lajo5mc1y029z",
+          "league": "championship"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "nf3lajo5mc1y029z",
+          "home_score": 67.0,
+          "away": "scevbtv5mdu8o35t",
+          "away_score": 76.25
+        },
+        {
+          "gw": 20,
+          "home": "hlx7c36imc1y127c",
+          "home_score": 90.25,
+          "away": "nf3lajo5mc1y029z",
+          "away_score": 64.25
+        },
+        {
+          "gw": 21,
+          "home": "scevbtv5mdu8o35t",
+          "home_score": 50.0,
+          "away": "hlx7c36imc1y127c",
+          "away_score": 85.25
+        }
+      ]
+    },
+    "F": {
+      "teams": [
+        {
+          "name": "The Mask of Yoro",
+          "id": "1iripq9xmc2328x0",
+          "league": "premier_league"
+        },
+        {
+          "name": "Titanic FC",
+          "id": "p9au1qsamc231lgn",
+          "league": "championship"
+        },
+        {
+          "name": "Jbizz9745",
+          "id": "a3epi4rnmd8yujxf",
+          "league": "league_one"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "a3epi4rnmd8yujxf",
+          "home_score": 46.75,
+          "away": "1iripq9xmc2328x0",
+          "away_score": 87.5
+        },
+        {
+          "gw": 20,
+          "home": "p9au1qsamc231lgn",
+          "home_score": 122.75,
+          "away": "a3epi4rnmd8yujxf",
+          "away_score": 69.75
+        },
+        {
+          "gw": 21,
+          "home": "1iripq9xmc2328x0",
+          "home_score": 151.0,
+          "away": "p9au1qsamc231lgn",
+          "away_score": 102.5
+        }
+      ]
+    },
+    "G": {
+      "teams": [
+        {
+          "name": "Jibbledinho",
+          "id": "t1i0wwwtmc3gswcr",
+          "league": "league_one"
+        },
+        {
+          "name": "Pep and the City",
+          "id": "adwrwl4vmc1y127c",
+          "league": "premier_league"
+        },
+        {
+          "name": "Roncy Rovers",
+          "id": "0v9zffabmc1y029z",
+          "league": "championship"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "adwrwl4vmc1y127c",
+          "home_score": 175.5,
+          "away": "0v9zffabmc1y029z",
+          "away_score": 86.25
+        },
+        {
+          "gw": 20,
+          "home": "t1i0wwwtmc3gswcr",
+          "home_score": 83.5,
+          "away": "adwrwl4vmc1y127c",
+          "away_score": 80.5
+        },
+        {
+          "gw": 21,
+          "home": "0v9zffabmc1y029z",
+          "home_score": 91.0,
+          "away": "t1i0wwwtmc3gswcr",
+          "away_score": 106.25
+        }
+      ]
+    },
+    "H": {
+      "teams": [
+        {
+          "name": "Amartey McFly",
+          "id": "dyijbhb6mc231lgm",
+          "league": "championship"
+        },
+        {
+          "name": "Samgwest",
+          "id": "jfvxrwwkmchi2byh",
+          "league": "league_one"
+        },
+        {
+          "name": "West Country Wanderers",
+          "id": "y8p0b7dhmc1y127b",
+          "league": "premier_league"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "dyijbhb6mc231lgm",
+          "home_score": 92.0,
+          "away": "jfvxrwwkmchi2byh",
+          "away_score": 86.75
+        },
+        {
+          "gw": 20,
+          "home": "y8p0b7dhmc1y127b",
+          "home_score": 42.75,
+          "away": "dyijbhb6mc231lgm",
+          "away_score": 91.5
+        },
+        {
+          "gw": 21,
+          "home": "jfvxrwwkmchi2byh",
+          "home_score": 114.25,
+          "away": "y8p0b7dhmc1y127b",
+          "away_score": 89.75
+        }
+      ]
+    },
+    "I": {
+      "teams": [
+        {
+          "name": "Bayern Bru",
+          "id": "j4uwveqkmc1y127b",
+          "league": "premier_league"
+        },
+        {
+          "name": "Matt Ritchie GOAT",
+          "id": "qnzeiykwmc2gcdl3",
+          "league": "championship"
+        },
+        {
+          "name": "tlivesey789",
+          "id": "h3qeclcnmd5dxovt",
+          "league": "league_one"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "h3qeclcnmd5dxovt",
+          "home_score": 101.75,
+          "away": "j4uwveqkmc1y127b",
+          "away_score": 95.25
+        },
+        {
+          "gw": 20,
+          "home": "qnzeiykwmc2gcdl3",
+          "home_score": 92.75,
+          "away": "h3qeclcnmd5dxovt",
+          "away_score": 46.75
+        },
+        {
+          "gw": 21,
+          "home": "j4uwveqkmc1y127b",
+          "home_score": 77.25,
+          "away": "qnzeiykwmc2gcdl3",
+          "away_score": 75.75
+        }
+      ]
+    },
+    "J": {
+      "teams": [
+        {
+          "name": "Blinked FC",
+          "id": "nh7qp7obmd8zd2xn",
+          "league": "league_one"
+        },
+        {
+          "name": "Los Tibbles",
+          "id": "p0dpfop7mc1y029z",
+          "league": "championship"
+        },
+        {
+          "name": "Freedyfloundering",
+          "id": "0fpod9dqmc1y127b",
+          "league": "premier_league"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "0fpod9dqmc1y127b",
+          "home_score": 83.75,
+          "away": "p0dpfop7mc1y029z",
+          "away_score": 119.75
+        },
+        {
+          "gw": 20,
+          "home": "nh7qp7obmd8zd2xn",
+          "home_score": 149.25,
+          "away": "0fpod9dqmc1y127b",
+          "away_score": 79.0
+        },
+        {
+          "gw": 21,
+          "home": "p0dpfop7mc1y029z",
+          "home_score": 59.5,
+          "away": "nh7qp7obmd8zd2xn",
+          "away_score": 63.0
+        }
+      ]
+    },
+    "K": {
+      "teams": [
+        {
+          "name": "Goonersaurus",
+          "id": "mz25n6llmcdjgldr",
+          "league": "league_one"
+        },
+        {
+          "name": "Dunc and disorderly",
+          "id": "7qgmju8cmc1y029z",
+          "league": "championship"
+        },
+        {
+          "name": "CR7 \ud83d\udc10",
+          "id": "0qa4vnovmc1y127b",
+          "league": "premier_league"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "7qgmju8cmc1y029z",
+          "home_score": 104.0,
+          "away": "mz25n6llmcdjgldr",
+          "away_score": 114.75
+        },
+        {
+          "gw": 20,
+          "home": "0qa4vnovmc1y127b",
+          "home_score": 103.0,
+          "away": "7qgmju8cmc1y029z",
+          "away_score": 119.5
+        },
+        {
+          "gw": 21,
+          "home": "mz25n6llmcdjgldr",
+          "home_score": 105.5,
+          "away": "0qa4vnovmc1y127b",
+          "away_score": 94.0
+        }
+      ]
+    },
+    "L": {
+      "teams": [
+        {
+          "name": "GlacierCampers",
+          "id": "zvw3mtldmc2aruod",
+          "league": "league_one"
+        },
+        {
+          "name": "Parachute FC",
+          "id": "1u56xcmpmc1y127c",
+          "league": "premier_league"
+        },
+        {
+          "name": "Flatlanders FC",
+          "id": "k15r5h3ymc1y029z",
+          "league": "championship"
+        }
+      ],
+      "matches": [
+        {
+          "gw": 19,
+          "home": "zvw3mtldmc2aruod",
+          "home_score": 113.0,
+          "away": "1u56xcmpmc1y127c",
+          "away_score": 99.25
+        },
+        {
+          "gw": 20,
+          "home": "k15r5h3ymc1y029z",
+          "home_score": 59.25,
+          "away": "zvw3mtldmc2aruod",
+          "away_score": 107.0
+        },
+        {
+          "gw": 21,
+          "home": "1u56xcmpmc1y127c",
+          "home_score": 155.75,
+          "away": "k15r5h3ymc1y029z",
+          "away_score": 49.0
+        }
+      ]
+    }
+  },
+  "playoff": {
+    "matches": [
+      {
+        "home": "ykhysfwrmc1y029z",
+        "away": "59exo6ggmc1y029z",
+        "leg1_gw": 23,
+        "leg1_home": 107.5,
+        "leg1_away": 76.75,
+        "leg2_gw": 24,
+        "leg2_home": 91.25,
+        "leg2_away": 97.5,
+        "winner": "ykhysfwrmc1y029z"
+      },
+      {
+        "home": "j4uwveqkmc1y127b",
+        "away": "qnzeiykwmc2gcdl3",
+        "leg1_gw": 23,
+        "leg1_home": 114.25,
+        "leg1_away": 121.0,
+        "leg2_gw": 24,
+        "leg2_home": 108.0,
+        "leg2_away": 107.5,
+        "winner": "qnzeiykwmc2gcdl3"
+      },
+      {
+        "home": "1u56xcmpmc1y127c",
+        "away": "vke7s73tmc1y029z",
+        "leg1_gw": 23,
+        "leg1_home": 91.25,
+        "leg1_away": 93.75,
+        "leg2_gw": 24,
+        "leg2_home": 112.75,
+        "leg2_away": 63.75,
+        "winner": "1u56xcmpmc1y127c"
+      },
+      {
+        "home": "dyijbhb6mc231lgm",
+        "away": "hlx7c36imc1y127c",
+        "leg1_gw": 23,
+        "leg1_home": 102.5,
+        "leg1_away": 84.75,
+        "leg2_gw": 24,
+        "leg2_home": 71.75,
+        "leg2_away": 84.25,
+        "winner": "dyijbhb6mc231lgm"
+      },
+      {
+        "home": "adwrwl4vmc1y127c",
+        "away": "p9au1qsamc231lgn",
+        "leg1_gw": 23,
+        "leg1_home": 104.0,
+        "leg1_away": 63.0,
+        "leg2_gw": 24,
+        "leg2_home": 80.25,
+        "leg2_away": 79.5,
+        "winner": "adwrwl4vmc1y127c"
+      },
+      {
+        "home": "7qgmju8cmc1y029z",
+        "away": "yehqkl27md6sqj6d",
+        "leg1_gw": 23,
+        "leg1_home": 90.0,
+        "leg1_away": 85.25,
+        "leg2_gw": 24,
+        "leg2_home": 134.25,
+        "leg2_away": 112.75,
+        "winner": "7qgmju8cmc1y029z"
+      },
+      {
+        "home": "l7y2f1nwmc1y127b",
+        "away": "scevbtv5mdu8o35t",
+        "leg1_gw": 23,
+        "leg1_home": 93.0,
+        "leg1_away": 80.0,
+        "leg2_gw": 24,
+        "leg2_home": 76.75,
+        "leg2_away": 129.25,
+        "winner": "scevbtv5mdu8o35t"
+      },
+      {
+        "home": "jfvxrwwkmchi2byh",
+        "away": "p0dpfop7mc1y029z",
+        "leg1_gw": 23,
+        "leg1_home": 112.25,
+        "leg1_away": 91.5,
+        "leg2_gw": 24,
+        "leg2_home": 112.0,
+        "leg2_away": 137.25,
+        "winner": "p0dpfop7mc1y029z"
+      }
+    ]
+  },
+  "round_of_16": {
+    "matches": [
+      {
+        "home": "7qgmju8cmc1y029z",
+        "away": "p0dpfop7mc1y029z",
+        "leg1_gw": 26,
+        "leg1_home": 177.5,
+        "leg1_away": 150.25,
+        "leg2_gw": 27,
+        "leg2_home": 130.25,
+        "leg2_away": 63.5,
+        "winner": "7qgmju8cmc1y029z"
+      },
+      {
+        "home": "scevbtv5mdu8o35t",
+        "away": "buh7gx3emc1y127b",
+        "leg1_gw": 26,
+        "leg1_home": 87.5,
+        "leg1_away": 117.0,
+        "leg2_gw": 27,
+        "leg2_home": 116.0,
+        "leg2_away": 102.25,
+        "winner": "buh7gx3emc1y127b"
+      },
+      {
+        "home": "k04bc3j1md8yys3n",
+        "away": "ykhysfwrmc1y029z",
+        "leg1_gw": 26,
+        "leg1_home": 101.5,
+        "leg1_away": 65.25,
+        "leg2_gw": 27,
+        "leg2_home": 44.25,
+        "leg2_away": 86.25,
+        "winner": "ykhysfwrmc1y029z"
+      },
+      {
+        "home": "zvw3mtldmc2aruod",
+        "away": "mz25n6llmcdjgldr",
+        "leg1_gw": 26,
+        "leg1_home": 106.75,
+        "leg1_away": 164.0,
+        "leg2_gw": 27,
+        "leg2_home": 103.0,
+        "leg2_away": 77.25,
+        "winner": "mz25n6llmcdjgldr"
+      },
+      {
+        "home": "osw3631umdabkjaf",
+        "away": "1iripq9xmc2328x0",
+        "leg1_gw": 26,
+        "leg1_home": 64.0,
+        "leg1_away": 116.25,
+        "leg2_gw": 27,
+        "leg2_home": 58.5,
+        "leg2_away": 81.25,
+        "winner": "1iripq9xmc2328x0"
+      },
+      {
+        "home": "dyijbhb6mc231lgm",
+        "away": "nh7qp7obmd8zd2xn",
+        "leg1_gw": 26,
+        "leg1_home": 67.25,
+        "leg1_away": 67.5,
+        "leg2_gw": 27,
+        "leg2_home": 79.0,
+        "leg2_away": 91.75,
+        "winner": "nh7qp7obmd8zd2xn"
+      },
+      {
+        "home": "t1i0wwwtmc3gswcr",
+        "away": "adwrwl4vmc1y127c",
+        "leg1_gw": 26,
+        "leg1_home": 94.0,
+        "leg1_away": 73.5,
+        "leg2_gw": 27,
+        "leg2_home": 86.0,
+        "leg2_away": 92.75,
+        "winner": "t1i0wwwtmc3gswcr"
+      },
+      {
+        "home": "qnzeiykwmc2gcdl3",
+        "away": "1u56xcmpmc1y127c",
+        "leg1_gw": 26,
+        "leg1_home": 144.5,
+        "leg1_away": 139.75,
+        "leg2_gw": 27,
+        "leg2_home": 119.25,
+        "leg2_away": 54.75,
+        "winner": "qnzeiykwmc2gcdl3"
+      }
+    ]
+  },
+  "quarter_final": {
+    "matches": []
+  },
+  "semi_final": {
+    "matches": []
+  },
+  "final": {
+    "matches": []
+  }
+}
