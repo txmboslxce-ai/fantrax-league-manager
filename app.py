@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, jsonify, request
 from fantrax import get_standings, get_all_team_id_maps
 from motm import calculate_motm
@@ -105,4 +106,5 @@ def api_cup_draw(round_name):
         return jsonify({"success": False, "error": str(e)})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
