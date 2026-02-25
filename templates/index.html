@@ -20,43 +20,48 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
+    /* Full-height layout, no body scroll */
+    html, body {
+      height: 100%;
+      overflow: hidden;
       background: var(--bg);
       color: var(--text);
       font-family: 'Barlow', sans-serif;
       font-weight: 300;
-      min-height: 100vh;
     }
 
-    /* ── HEADER ── */
+    /* ── HEADER — fixed, never scrolls ── */
     header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
       display: flex;
       align-items: center;
-      gap: 2rem;
-      height: 60px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      padding: 0 1.25rem;
+      gap: 1rem;
+      z-index: 200;
     }
 
     .logo {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 1.3rem;
+      font-size: 1.15rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--accent);
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     nav {
       display: flex;
-      gap: 0.25rem;
-      flex: 1;
+      gap: 0.2rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
+    nav::-webkit-scrollbar { display: none; }
 
     .nav-btn {
       background: none;
@@ -67,30 +72,38 @@
       font-size: 0.85rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.4rem 0.9rem;
+      padding: 0.4rem 0.85rem;
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-
-    .nav-btn:hover { color: var(--text); background: var(--surface2); }
+    .nav-btn:hover  { color: var(--text); background: var(--surface2); }
     .nav-btn.active { color: var(--accent); background: rgba(0,229,160,0.1); }
 
-    /* ── LAYOUT ── */
+    /* ── SECTIONS — each fills viewport minus header, scrolls independently ── */
+    .section {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .section.active { display: block; }
+
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.5rem;
     }
 
-    .section { display: none; }
-    .section.active { display: block; }
-
+    /* ── SECTION HEADER ── */
     .section-header {
       display: flex;
       align-items: baseline;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border);
     }
@@ -98,14 +111,14 @@
     .section-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
 
     .section-sub {
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
@@ -113,8 +126,8 @@
     /* ── CONTROLS ── */
     .controls {
       display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -125,38 +138,33 @@
       background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 4px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       outline: none;
     }
-
     select:focus { border-color: var(--accent); }
 
     .btn {
       background: var(--accent);
       color: #000;
       border: none;
-      padding: 0.5rem 1.25rem;
+      padding: 0.45rem 1.1rem;
       border-radius: 4px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.15s;
     }
-
     .btn:hover { background: #00ffb3; }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
     .btn-secondary {
       background: var(--surface2);
       color: var(--text);
       border: 1px solid var(--border);
     }
-
     .btn-secondary:hover { background: var(--border); }
 
     /* ── TABLES ── */
@@ -165,17 +173,23 @@
       border: 1px solid var(--border);
       border-radius: 6px;
       overflow: hidden;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Horizontal scroll wrapper for tables on mobile */
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .table-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 0.9rem;
       border-bottom: 1px solid var(--border);
       background: var(--surface2);
     }
@@ -183,39 +197,41 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      min-width: 480px; /* forces horizontal scroll on mobile */
     }
 
     thead th {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 600;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 0.6rem 1rem;
+      padding: 0.55rem 0.85rem;
       text-align: left;
       border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
-
     thead th.num { text-align: right; }
 
     tbody tr {
       border-bottom: 1px solid rgba(42,45,54,0.5);
       transition: background 0.1s;
     }
-
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: var(--surface2); }
 
-    tbody td { padding: 0.65rem 1rem; font-weight: 400; }
-
+    tbody td {
+      padding: 0.6rem 0.85rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
     tbody td.num {
       text-align: right;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--text);
+      font-size: 0.92rem;
     }
 
     .rank {
@@ -224,42 +240,43 @@
       color: var(--muted);
       width: 2rem;
     }
-
-    .rank-1  { color: var(--gold); }
-    .rank-2  { color: var(--accent); }
+    .rank-1   { color: var(--gold); }
+    .rank-2   { color: var(--accent); }
     .rank-rel { color: var(--accent2); }
 
     .badge {
       display: inline-block;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 0.15rem 0.4rem;
+      padding: 0.1rem 0.32rem;
       border-radius: 3px;
-      margin-left: 0.5rem;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .badge-gold  { background: rgba(255,209,102,0.15); color: var(--gold); }
+    .badge-green { background: rgba(0,229,160,0.15);   color: var(--accent); }
+    .badge-red   { background: rgba(255,107,53,0.15);  color: var(--accent2); }
+
+    /* ── CUP SECTION LAYOUT ── */
+    /* Cup section has sticky sub-header for tabs */
+    #section-cup .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
     }
 
-    .badge-gold    { background: rgba(255,209,102,0.15); color: var(--gold); }
-    .badge-green   { background: rgba(0,229,160,0.15);   color: var(--accent); }
-    .badge-red     { background: rgba(255,107,53,0.15);  color: var(--accent2); }
-
-    /* ── GRID LAYOUTS ── */
-    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
-
-    @media (max-width: 900px) {
-      .grid-3, .grid-2 { grid-template-columns: 1fr; }
-    }
-
-    /* ── CUP ── */
     .cup-tabs {
       display: flex;
-      gap: 0.25rem;
-      margin-bottom: 1.5rem;
       border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
+      margin-bottom: 1.25rem;
     }
+    .cup-tabs::-webkit-scrollbar { display: none; }
 
     .cup-tab {
       background: none;
@@ -268,16 +285,17 @@
       color: var(--muted);
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.9rem;
       cursor: pointer;
       margin-bottom: -1px;
       transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-
-    .cup-tab:hover { color: var(--text); }
+    .cup-tab:hover  { color: var(--text); }
     .cup-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
     .cup-round { display: none; }
@@ -288,46 +306,46 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 1.25rem;
+      padding: 1.1rem;
       margin-bottom: 0.75rem;
     }
 
-    .match-teams {
+    /* Aggregate row — big, centred */
+    .match-agg {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
       margin-bottom: 0.75rem;
     }
 
     .match-team {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1rem;
     }
-
     .match-team.home { text-align: right; }
 
     .match-score {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--accent);
       text-align: center;
-      min-width: 80px;
+      min-width: 70px;
     }
 
+    /* Leg rows — same 3-col grid as agg, smaller */
     .match-legs {
       border-top: 1px solid var(--border);
-      padding-top: 0.75rem;
+      padding-top: 0.65rem;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.3rem;
     }
 
     .match-leg-row {
-      display: grid;
-      grid-template-columns: auto 1fr auto 1fr auto;
+      display: flex;
       align-items: center;
       gap: 0.5rem;
       font-size: 0.82rem;
@@ -336,106 +354,97 @@
     .leg-label {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
+      font-size: 0.68rem;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--muted);
-      min-width: 60px;
+      width: 80px;
+      flex-shrink: 0;
     }
 
-    .leg-score {
+    .leg-scores {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr;
+      align-items: center;
+    }
+
+    .leg-home {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 600;
-      font-size: 0.9rem;
-      text-align: center;
+      text-align: right;
+      color: var(--text);
     }
 
-    .leg-vs {
-      color: var(--border);
+    .leg-dash {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
       text-align: center;
+      color: var(--muted);
+    }
+
+    .leg-away {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      color: var(--text);
     }
 
     .match-winner-label {
       text-align: center;
-      margin-top: 0.75rem;
+      margin-top: 0.65rem;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
-    /* ── MOTM ── */
-    .motm-winner {
+    /* ── MOTM BANNERS ── */
+    .motm-banner {
+      border-radius: 6px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .motm-winner-card {
       background: linear-gradient(135deg, rgba(255,209,102,0.1), rgba(255,209,102,0.03));
       border: 1px solid rgba(255,209,102,0.3);
-      border-radius: 6px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
     }
-
-    .motm-trophy { font-size: 2.5rem; line-height: 1; }
-
-    .motm-winner-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 1.8rem;
-      color: var(--gold);
-    }
-
-    .motm-winner-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .motm-winner-pts {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .motm-pending {
-      background: rgba(107,112,128,0.1);
+    .motm-pending-card {
+      background: rgba(107,112,128,0.08);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
     }
+    .motm-trophy   { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+    .motm-label    { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+    .motm-name     { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.6rem; }
+    .motm-name-won { color: var(--gold); }
+    .motm-name-live { color: var(--accent); }
+    .motm-name-none { color: var(--muted); font-size: 1.2rem; }
+    .motm-detail   { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.92rem; color: var(--text); margin-top: 0.2rem; }
 
     /* ── GROUPS GRID ── */
     .groups-grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
-
     @media (max-width: 1100px) { .groups-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 700px)  { .groups-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 650px)  { .groups-grid { grid-template-columns: 1fr; } }
 
     /* ── STATES ── */
     .loading {
       text-align: center;
       padding: 3rem;
       color: var(--muted);
-      font-size: 0.9rem;
-      letter-spacing: 0.05em;
+      font-size: 0.88rem;
     }
-
     .loading::after {
       content: '';
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 11px; height: 11px;
       border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
@@ -443,21 +452,20 @@
       margin-left: 0.5rem;
       vertical-align: middle;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .empty {
       text-align: center;
       padding: 3rem;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     .error {
       background: rgba(255,107,53,0.1);
       border: 1px solid rgba(255,107,53,0.3);
       color: var(--accent2);
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 1rem;
       border-radius: 4px;
       font-size: 0.85rem;
       margin-bottom: 1rem;
@@ -466,8 +474,9 @@
 </head>
 <body>
 
+<!-- Fixed top nav — never scrolls -->
 <header>
-  <div class="logo">⚽ League Manager</div>
+  <div class="logo">⚽ FLM</div>
   <nav>
     <button class="nav-btn active" onclick="showSection('standings', this)">Standings</button>
     <button class="nav-btn" onclick="showSection('motm', this)">MOTM</button>
@@ -475,10 +484,9 @@
   </nav>
 </header>
 
-<div class="container">
-
-  <!-- ── STANDINGS ── -->
-  <div id="section-standings" class="section active">
+<!-- Each section fills the space below the header and scrolls independently -->
+<div id="section-standings" class="section active">
+  <div class="container">
     <div class="section-header">
       <div class="section-title">Standings</div>
       <div class="section-sub">2025–26 Season</div>
@@ -492,9 +500,10 @@
     </div>
     <div id="standings-content"><div class="loading">Loading</div></div>
   </div>
+</div>
 
-  <!-- ── MOTM ── -->
-  <div id="section-motm" class="section">
+<div id="section-motm" class="section">
+  <div class="container">
     <div class="section-header">
       <div class="section-title">Manager of the Month</div>
       <div class="section-sub">Head-to-head points</div>
@@ -520,110 +529,86 @@
     </div>
     <div id="motm-content"><div class="loading">Loading</div></div>
   </div>
+</div>
 
-  <!-- ── CUP ── -->
-  <div id="section-cup" class="section">
+<div id="section-cup" class="section">
+  <div class="container">
     <div class="section-header">
       <div class="section-title">League Cup</div>
       <div class="section-sub">2025–26</div>
     </div>
     <div class="cup-tabs">
-      <button class="cup-tab active" onclick="showCupRound('groups', this)">Group Stage</button>
-      <button class="cup-tab" onclick="showCupRound('playoff', this)">Playoff</button>
-      <button class="cup-tab" onclick="showCupRound('round_of_16', this)">Round of 16</button>
-      <button class="cup-tab" onclick="showCupRound('quarter_final', this)">Quarter Final</button>
-      <button class="cup-tab" onclick="showCupRound('semi_final', this)">Semi Final</button>
-      <button class="cup-tab" onclick="showCupRound('final', this)">Final</button>
+      <button class="cup-tab" data-round="groups"        onclick="showCupRound('groups',this)">Group Stage</button>
+      <button class="cup-tab" data-round="playoff"       onclick="showCupRound('playoff',this)">Playoff</button>
+      <button class="cup-tab" data-round="round_of_16"   onclick="showCupRound('round_of_16',this)">Round of 16</button>
+      <button class="cup-tab" data-round="quarter_final" onclick="showCupRound('quarter_final',this)">Quarter Final</button>
+      <button class="cup-tab" data-round="semi_final"    onclick="showCupRound('semi_final',this)">Semi Final</button>
+      <button class="cup-tab" data-round="final"         onclick="showCupRound('final',this)">Final</button>
     </div>
-    <div id="cup-groups"       class="cup-round active"><div class="loading">Loading</div></div>
-    <div id="cup-playoff"      class="cup-round"></div>
-    <div id="cup-round_of_16" class="cup-round"></div>
+    <div id="cup-groups"        class="cup-round"><div class="loading">Loading</div></div>
+    <div id="cup-playoff"       class="cup-round"></div>
+    <div id="cup-round_of_16"   class="cup-round"></div>
     <div id="cup-quarter_final" class="cup-round"></div>
-    <div id="cup-semi_final"   class="cup-round"></div>
-    <div id="cup-final"        class="cup-round"></div>
+    <div id="cup-semi_final"    class="cup-round"></div>
+    <div id="cup-final"         class="cup-round"></div>
   </div>
-
 </div>
 
 <script>
-  // ── GW SCHEDULE ─────────────────────────────────────────────────────────────
-  // Month -> last GW date (used to determine if month is complete)
-  const MONTH_GWS = {
-    "August":    { gws: [1,2,3],           endDate: "2025-09-11" },
-    "September": { gws: [4,5,6],           endDate: "2025-10-02" },
-    "October":   { gws: [7,8,9],           endDate: "2025-10-30" },
-    "November":  { gws: [10,11,12,13],     endDate: "2025-11-27" },
-    "December":  { gws: [14,15,16,17,18,19], endDate: "2026-01-08" },
-    "January":   { gws: [20,21,22,23,24],  endDate: "2026-01-29" },
-    "February":  { gws: [25,26,27,28],     endDate: "2026-02-26" },
-    "March":     { gws: [29,30,31],        endDate: "2026-03-26" },
-    "April":     { gws: [32,33,34],        endDate: "2026-04-23" },
-    "May":       { gws: [35,36,37,38],     endDate: "2026-05-28" }
+  // ── MONTH END DATES ──────────────────────────────────────────────────────────
+  const MONTH_END = {
+    August:"2025-09-11", September:"2025-10-02", October:"2025-10-30",
+    November:"2025-11-27", December:"2026-01-08", January:"2026-01-29",
+    February:"2026-02-26", March:"2026-03-26", April:"2026-04-23", May:"2026-05-28"
   };
 
   function isMonthComplete(month) {
-    const info = MONTH_GWS[month];
-    if (!info) return false;
-    return new Date() > new Date(info.endDate);
+    return MONTH_END[month] ? new Date() > new Date(MONTH_END[month]) : false;
   }
 
-  // ── NAVIGATION ──────────────────────────────────────────────────────────────
+  // ── NAVIGATION ───────────────────────────────────────────────────────────────
   function showSection(name, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
     if (btn) btn.classList.add('active');
     if (name === 'standings') loadStandings();
-    if (name === 'motm') loadMOTM();
-    if (name === 'cup') loadCupGroups();
+    if (name === 'motm')      loadMOTM();
+    if (name === 'cup')       initCup();
   }
 
-  function showCupRound(round, btn) {
-    document.querySelectorAll('.cup-round').forEach(r => r.classList.remove('active'));
-    document.querySelectorAll('.cup-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('cup-' + round).classList.add('active');
-    if (btn) btn.classList.add('active');
-    if (round === 'groups') loadCupGroups();
-    else loadCupRound(round);
-  }
-
-  // ── STANDINGS ───────────────────────────────────────────────────────────────
+  // ── STANDINGS ────────────────────────────────────────────────────────────────
   async function loadStandings() {
     const league = document.getElementById('standings-league').value;
     const el = document.getElementById('standings-content');
     el.innerHTML = '<div class="loading">Loading</div>';
     try {
-      const res = await fetch(`/api/standings/${league}`);
+      const res  = await fetch(`/api/standings/${league}`);
       const json = await res.json();
       if (!json.success) throw new Error(json.error);
-      el.innerHTML = renderStandingsTable(json.data, league);
+      el.innerHTML = renderStandings(json.data, league);
     } catch(e) {
       el.innerHTML = `<div class="error">Error: ${e.message}</div>`;
     }
   }
 
-  function renderStandingsTable(data, leagueKey) {
+  function renderStandings(data, leagueKey) {
     const rows = data.map(t => {
-      const rank = t.rank;
-      let rankClass = '';
-      let badge = '';
-
-      if (rank === 1) {
+      let rankClass = '', badge = '';
+      if (t.rank === 1) {
         rankClass = 'rank-1';
         badge = '<span class="badge badge-gold">Leader</span>';
-      } else if (rank === 2 && (leagueKey === 'championship' || leagueKey === 'league_one')) {
+      } else if (t.rank === 2 && leagueKey !== 'premier_league') {
         rankClass = 'rank-2';
         badge = '<span class="badge badge-green">Promotion</span>';
-      } else if ((rank === 11 || rank === 12) && (leagueKey === 'premier_league' || leagueKey === 'championship')) {
+      } else if ((t.rank === 11 || t.rank === 12) && leagueKey !== 'league_one') {
         rankClass = 'rank-rel';
         badge = '<span class="badge badge-red">Relegation</span>';
       }
-
-      const pd = t.pd >= 0 ? `+${t.pd.toFixed(2)}` : t.pd.toFixed(2);
+      const pd      = t.pd >= 0 ? `+${t.pd.toFixed(2)}` : t.pd.toFixed(2);
       const pdColor = t.pd >= 0 ? 'var(--accent)' : 'var(--accent2)';
-
       return `<tr>
-        <td class="rank ${rankClass}">${rank}</td>
+        <td class="rank ${rankClass}">${t.rank}</td>
         <td>${t.teamName}${badge}</td>
         <td class="num">${t.w}</td>
         <td class="num">${t.d}</td>
@@ -635,7 +620,7 @@
       </tr>`;
     }).join('');
 
-    return `<div class="table-wrap"><table>
+    return `<div class="table-wrap"><div class="table-scroll"><table>
       <thead><tr>
         <th>#</th><th>Team</th>
         <th class="num">W</th><th class="num">D</th><th class="num">L</th>
@@ -643,17 +628,17 @@
         <th class="num">PD</th><th class="num">Pts</th>
       </tr></thead>
       <tbody>${rows}</tbody>
-    </table></div>`;
+    </table></div></div>`;
   }
 
-  // ── MOTM ────────────────────────────────────────────────────────────────────
+  // ── MOTM ─────────────────────────────────────────────────────────────────────
   async function loadMOTM() {
     const league = document.getElementById('motm-league').value;
     const month  = document.getElementById('motm-month').value;
-    const el = document.getElementById('motm-content');
+    const el     = document.getElementById('motm-content');
     el.innerHTML = '<div class="loading">Loading</div>';
     try {
-      const res = await fetch(`/api/motm/${league}/${month}`);
+      const res  = await fetch(`/api/motm/${league}/${month}`);
       const json = await res.json();
       if (!json.success) throw new Error(json.error);
       el.innerHTML = renderMOTM(json.data, month);
@@ -664,79 +649,103 @@
 
   function renderMOTM(data, month) {
     const complete = isMonthComplete(month);
+    const played   = data.results.filter(r => (r.w + r.d + r.l) > 0);
 
-    // Filter to only teams that have played at least one match
-    const played = data.results.filter(r => r.w + r.d + r.l > 0);
-
-    let bannerHtml = '';
+    let banner = '';
     if (played.length === 0) {
-      bannerHtml = `<div class="motm-pending">
-        <div style="font-size:2rem">📅</div>
+      banner = `<div class="motm-banner motm-pending-card">
+        <div class="motm-trophy">📅</div>
         <div>
-          <div class="motm-winner-label">${month} — Not Started</div>
-          <div class="motm-winner-name" style="color:var(--muted)">No games played yet</div>
+          <div class="motm-label">${month} — Not Started</div>
+          <div class="motm-name motm-name-none">No games played yet</div>
         </div>
       </div>`;
     } else if (complete) {
-      const winner = played[0];
-      bannerHtml = `<div class="motm-winner">
+      const w = played[0];
+      banner = `<div class="motm-banner motm-winner-card">
         <div class="motm-trophy">🏆</div>
         <div>
-          <div class="motm-winner-label">${month} Manager of the Month</div>
-          <div class="motm-winner-name">${winner.team}</div>
-          <div class="motm-winner-pts">${winner.pts} pts &nbsp;·&nbsp; ${winner.w}W ${winner.d}D ${winner.l}L &nbsp;·&nbsp; ${winner.pf.toFixed(2)} PF</div>
+          <div class="motm-label">${month} Manager of the Month</div>
+          <div class="motm-name motm-name-won">${w.team}</div>
+          <div class="motm-detail">${w.pts} pts · ${w.w}W ${w.d}D ${w.l}L · ${w.pf.toFixed(2)} PF</div>
         </div>
       </div>`;
     } else {
-      const leader = played[0];
-      bannerHtml = `<div class="motm-pending">
-        <div style="font-size:2rem">📊</div>
+      const l = played[0];
+      banner = `<div class="motm-banner motm-pending-card">
+        <div class="motm-trophy">📊</div>
         <div>
-          <div class="motm-winner-label">${month} — In Progress</div>
-          <div class="motm-winner-name" style="color:var(--accent)">${leader.team} leads</div>
-          <div class="motm-winner-pts">${leader.pts} pts &nbsp;·&nbsp; ${leader.w}W ${leader.d}D ${leader.l}L — Winner declared when month ends</div>
+          <div class="motm-label">${month} — In Progress</div>
+          <div class="motm-name motm-name-live">${l.team} leads</div>
+          <div class="motm-detail">${l.pts} pts · ${l.w}W ${l.d}D ${l.l}L · Winner declared when month ends</div>
         </div>
       </div>`;
     }
 
-    const rows = played.map(r => `
-      <tr>
-        <td class="rank ${r.rank===1?'rank-1':''}">${r.rank}</td>
-        <td>${r.team}</td>
-        <td class="num">${r.pts}</td>
-        <td class="num">${r.w}</td>
-        <td class="num">${r.d}</td>
-        <td class="num">${r.l}</td>
-        <td class="num">${r.pf.toFixed(2)}</td>
-        <td class="num">${r.pa.toFixed(2)}</td>
-      </tr>`).join('');
+    const rows = played.map(r => `<tr>
+      <td class="rank ${r.rank===1?'rank-1':''}">${r.rank}</td>
+      <td>${r.team}</td>
+      <td class="num">${r.pts}</td>
+      <td class="num">${r.w}</td>
+      <td class="num">${r.d}</td>
+      <td class="num">${r.l}</td>
+      <td class="num">${r.pf.toFixed(2)}</td>
+      <td class="num">${r.pa.toFixed(2)}</td>
+    </tr>`).join('');
 
-    const gwsPlayed = data.gameweeks.filter(gw => {
-      const r = data.results.find(t => t.gameweeks && t.gameweeks[gw] && t.gameweeks[gw] > 0);
-      return !!r;
-    });
-
-    return `${bannerHtml}
+    return `${banner}
       <div class="table-wrap">
-        <div class="table-title">Gameweeks: ${data.gameweeks.join(', ')} · ${gwsPlayed.length} of ${data.gameweeks.length} played</div>
-        <table>
+        <div class="table-title">Gameweeks: ${data.gameweeks.join(', ')}</div>
+        <div class="table-scroll"><table>
           <thead><tr>
             <th>#</th><th>Team</th>
             <th class="num">Pts</th><th class="num">W</th><th class="num">D</th><th class="num">L</th>
             <th class="num">PF</th><th class="num">PA</th>
           </tr></thead>
           <tbody>${rows}</tbody>
-        </table>
+        </table></div>
       </div>`;
   }
 
-  // ── CUP GROUPS ──────────────────────────────────────────────────────────────
+  // ── CUP ──────────────────────────────────────────────────────────────────────
+  let cupInitialised = false;
+
+  async function initCup() {
+    if (cupInitialised) return;
+    cupInitialised = true;
+    try {
+      const res  = await fetch('/api/cup/current_round');
+      const json = await res.json();
+      const round = json.success ? json.data : 'groups';
+      activateCupTab(round);
+      if (round === 'groups') loadCupGroups();
+      else loadCupRound(round);
+    } catch(e) {
+      activateCupTab('groups');
+      loadCupGroups();
+    }
+  }
+
+  function activateCupTab(round) {
+    document.querySelectorAll('.cup-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.round === round);
+    });
+    document.querySelectorAll('.cup-round').forEach(r => r.classList.remove('active'));
+    document.getElementById('cup-' + round).classList.add('active');
+  }
+
+  function showCupRound(round, btn) {
+    activateCupTab(round);
+    if (round === 'groups') loadCupGroups();
+    else loadCupRound(round);
+  }
+
   async function loadCupGroups() {
     const el = document.getElementById('cup-groups');
     if (el.dataset.loaded) return;
     el.innerHTML = '<div class="loading">Loading</div>';
     try {
-      const res = await fetch('/api/cup/groups');
+      const res  = await fetch('/api/cup/groups');
       const json = await res.json();
       if (!json.success) throw new Error(json.error);
       el.innerHTML = renderGroups(json.data);
@@ -749,15 +758,9 @@
   function renderGroups(groups) {
     const cards = Object.entries(groups).map(([name, teams]) => {
       const rows = teams.map(t => {
-        let rankClass = '';
-        let badge = '';
-        if (t.rank === 1) {
-          rankClass = 'rank-1';
-          badge = '<span class="badge badge-gold">QF</span>';
-        } else if (t.rank === 2) {
-          rankClass = 'rank-2';
-          badge = '<span class="badge badge-green">PO</span>';
-        }
+        let rankClass = '', badge = '';
+        if (t.rank === 1) { rankClass = 'rank-1'; badge = '<span class="badge badge-gold">R16</span>'; }
+        else if (t.rank === 2) { rankClass = 'rank-2'; badge = '<span class="badge badge-green">PO</span>'; }
         return `<tr>
           <td class="rank ${rankClass}">${t.rank}</td>
           <td>${t.name}${badge}</td>
@@ -768,30 +771,27 @@
           <td class="num">${t.pf.toFixed(1)}</td>
         </tr>`;
       }).join('');
-
       return `<div class="table-wrap">
         <div class="table-title">Group ${name}</div>
-        <table>
+        <div class="table-scroll"><table>
           <thead><tr>
             <th>#</th><th>Team</th>
             <th class="num">Pts</th><th class="num">W</th><th class="num">D</th><th class="num">L</th>
             <th class="num">PF</th>
           </tr></thead>
           <tbody>${rows}</tbody>
-        </table>
+        </table></div>
       </div>`;
     }).join('');
-
     return `<div class="groups-grid">${cards}</div>`;
   }
 
-  // ── CUP ROUNDS ──────────────────────────────────────────────────────────────
   async function loadCupRound(round) {
     const el = document.getElementById('cup-' + round);
     if (el.dataset.loaded) return;
     el.innerHTML = '<div class="loading">Loading</div>';
     try {
-      const res = await fetch(`/api/cup/round/${round}`);
+      const res  = await fetch(`/api/cup/round/${round}`);
       const json = await res.json();
       if (!json.success) throw new Error(json.error);
       if (!json.data.length) {
@@ -809,45 +809,40 @@
     const cards = matches.map(m => {
       const homeWin = m.winner === m.home;
       const awayWin = m.winner === m.away;
-      const homeColor = homeWin ? 'color:var(--gold)' : '';
-      const awayColor = awayWin ? 'color:var(--gold)' : '';
-
-      const leg1HomeScore = m.leg1_home !== null ? m.leg1_home : '–';
-      const leg1AwayScore = m.leg1_away !== null ? m.leg1_away : '–';
-      const leg2HomeScore = m.leg2_home !== null ? m.leg2_home : '–';
-      const leg2AwayScore = m.leg2_away !== null ? m.leg2_away : '–';
-
-      const winnerHtml = m.winner
-        ? `<div class="match-winner-label" style="color:var(--gold)">⚡ ${m.winner} advances</div>`
-        : `<div class="match-winner-label" style="color:var(--muted)">In progress</div>`;
+      const l1h = m.leg1_home !== null ? m.leg1_home : '–';
+      const l1a = m.leg1_away !== null ? m.leg1_away : '–';
+      const l2h = m.leg2_home !== null ? m.leg2_home : '–';
+      const l2a = m.leg2_away !== null ? m.leg2_away : '–';
 
       return `<div class="match-card">
-        <div class="match-teams">
-          <div class="match-team home" style="${homeColor}">${m.home}</div>
+        <div class="match-agg">
+          <div class="match-team home" style="${homeWin?'color:var(--gold)':''}">${m.home}</div>
           <div class="match-score">${m.home_agg ?? 0} – ${m.away_agg ?? 0}</div>
-          <div class="match-team" style="${awayColor}">${m.away}</div>
+          <div class="match-team" style="${awayWin?'color:var(--gold)':''}">${m.away}</div>
         </div>
-        <div class="match-legs">
-          <div class="match-leg-row">
-            <span class="leg-label">GW${m.leg1_gw} · Leg 1</span>
-            <span class="leg-score" style="text-align:right">${leg1HomeScore}</span>
-            <span class="leg-vs">–</span>
-            <span class="leg-score">${leg1AwayScore}</span>
-            <span></span>
-          </div>
-          <div class="match-leg-row">
-            <span class="leg-label">GW${m.leg2_gw} · Leg 2</span>
-            <span class="leg-score" style="text-align:right">${leg2HomeScore}</span>
-            <span class="leg-vs">–</span>
-            <span class="leg-score">${leg2AwayScore}</span>
-            <span></span>
+        <div class="match-leg-row">
+          <span class="leg-label">GW${m.leg1_gw} · Leg 1</span>
+          <div class="leg-scores">
+            <span class="leg-home">${l1h}</span>
+            <span class="leg-dash">–</span>
+            <span class="leg-away">${l1a}</span>
           </div>
         </div>
-        ${winnerHtml}
+        <div class="match-leg-row">
+          <span class="leg-label">GW${m.leg2_gw} · Leg 2</span>
+          <div class="leg-scores">
+            <span class="leg-home">${l2h}</span>
+            <span class="leg-dash">–</span>
+            <span class="leg-away">${l2a}</span>
+          </div>
+        </div>
+        ${m.winner
+          ? `<div class="match-winner-label" style="color:var(--gold)">⚡ ${m.winner} advances</div>`
+          : `<div class="match-winner-label" style="color:var(--muted)">In progress</div>`}
       </div>`;
     }).join('');
 
-    return `<div style="max-width:700px">
+    return `<div style="max-width:680px">
       <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
         <button class="btn btn-secondary" onclick="refreshCupRound('${round}')">↻ Refresh Scores</button>
       </div>
@@ -862,10 +857,9 @@
     loadCupRound(round);
   }
 
-  // ── INIT ────────────────────────────────────────────────────────────────────
+  // ── INIT ─────────────────────────────────────────────────────────────────────
   loadStandings();
   loadMOTM();
-  loadCupGroups();
 </script>
 </body>
 </html>

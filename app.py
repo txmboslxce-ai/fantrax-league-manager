@@ -105,6 +105,16 @@ def api_cup_draw(round_name):
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
+@app.route("/api/cup/current_round")
+def api_cup_current_round():
+    try:
+        config = load_cup_config()
+        from fantrax import get_current_round
+        round_name = get_current_round(config)
+        return jsonify({"success": True, "data": round_name})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port, debug=False)
