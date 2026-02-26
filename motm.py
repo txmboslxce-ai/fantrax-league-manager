@@ -1,9 +1,71 @@
 import json
+from datetime import datetime, timezone
 from fantrax import get_schedule
 
 def load_motm_config():
     with open("config/motm.json") as f:
         return json.load(f)
+
+def _parse_datetime(value):
+    if value is None:
+        return None
+
+    if isinstance(value, (int, float)):
+        # Fantrax-style epochs may be milliseconds.
+        ts = value / 1000 if value > 10_000_000_000 else value
+        try:
+            return datetime.fromtimestamp(ts, tz=timezone.utc)
+        except (ValueError, OSError):
+            return None
+
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return None
+
+        if raw.isdigit():
+            return _parse_datetime(int(raw))
+
+        iso = raw.replace("Z", "+00:00")
+        try:
+            dt = datetime.fromisoformat(iso)
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+            try:
+                dt = datetime.strptime(raw, fmt)
+                return dt.replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+
+    return None
+
+def _extract_gameweek_end(gw_data):
+    end_candidates = []
+
+    def walk(node):
+        if isinstance(node, dict):
+            for key, value in node.items():
+                lower = key.lower()
+                likely_end = (
+                    lower in {"enddate", "end_date", "endtime", "end_time", "end"}
+                    or ("end" in lower and ("date" in lower or "time" in lower))
+                    or "scoringperiodend" in lower
+                )
+                if likely_end:
+                    parsed = _parse_datetime(value)
+                    if parsed:
+                        end_candidates.append(parsed)
+                if isinstance(value, (dict, list)):
+                    walk(value)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+
+    walk(gw_data)
+    return max(end_candidates) if end_candidates else None
 
 def calculate_motm(league_key, month):
     config = load_motm_config()
@@ -15,9 +77,14 @@ def calculate_motm(league_key, month):
     schedule = get_schedule(league_key)
     
     team_stats = {}
+    month_complete = True
+
+    now_utc = datetime.now(timezone.utc)
 
     for gw in gameweeks:
         gw_data = schedule[gw - 1]
+        gw_complete = True
+        gw_end = _extract_gameweek_end(gw_data)
         for row in gw_data["rows"]:
             cells = row["cells"]
             away_team = cells[0]["content"]
@@ -29,6 +96,11 @@ def calculate_motm(league_key, month):
             for team in [away_team, home_team]:
                 if team not in team_stats:
                     team_stats[team] = {"pts": 0, "w": 0, "d": 0, "l": 0, "pf": 0.0, "pa": 0.0}
+
+            # Fantrax represents unplayed fixtures as 0-0; ignore for MOTM stats
+            if away_score == 0.0 and home_score == 0.0:
+                gw_complete = False
+                continue
 
             # Award points
             if away_score > home_score:
@@ -51,6 +123,12 @@ def calculate_motm(league_key, month):
             team_stats[home_team]["pf"] += home_score
             team_stats[home_team]["pa"] += away_score
 
+        if gw_end is not None:
+            if now_utc < gw_end:
+                month_complete = False
+        elif not gw_complete:
+            month_complete = False
+
     # Sort by points then PF
     ranked = sorted(team_stats.items(), key=lambda x: (x[1]["pts"], x[1]["pf"]), reverse=True)
 
@@ -58,6 +136,7 @@ def calculate_motm(league_key, month):
         "month": month,
         "league": league_key,
         "gameweeks": gameweeks,
+        "month_complete": month_complete,
         "results": [
             {
                 "rank": i + 1,

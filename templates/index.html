@@ -345,9 +345,9 @@
     }
 
     .match-leg-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
       align-items: center;
-      gap: 0.5rem;
       font-size: 0.82rem;
     }
 
@@ -360,6 +360,10 @@
       color: var(--muted);
       width: 80px;
       flex-shrink: 0;
+    }
+
+    .leg-spacer {
+      width: 80px;
     }
 
     .leg-scores {
@@ -648,7 +652,9 @@
   }
 
   function renderMOTM(data, month) {
-    const complete = isMonthComplete(month);
+    const complete = (typeof data.month_complete === 'boolean')
+      ? data.month_complete
+      : isMonthComplete(month);
     const played   = data.results.filter(r => (r.w + r.d + r.l) > 0);
 
     let banner = '';
@@ -682,7 +688,7 @@
       </div>`;
     }
 
-    const rows = played.map(r => `<tr>
+    const rows = data.results.map(r => `<tr>
       <td class="rank ${r.rank===1?'rank-1':''}">${r.rank}</td>
       <td>${r.team}</td>
       <td class="num">${r.pts}</td>
@@ -827,6 +833,7 @@
             <span class="leg-dash">–</span>
             <span class="leg-away">${l1a}</span>
           </div>
+          <span class="leg-spacer" aria-hidden="true"></span>
         </div>
         <div class="match-leg-row">
           <span class="leg-label">GW${m.leg2_gw} · Leg 2</span>
@@ -835,6 +842,7 @@
             <span class="leg-dash">–</span>
             <span class="leg-away">${l2a}</span>
           </div>
+          <span class="leg-spacer" aria-hidden="true"></span>
         </div>
         ${m.winner
           ? `<div class="match-winner-label" style="color:var(--gold)">⚡ ${m.winner} advances</div>`
