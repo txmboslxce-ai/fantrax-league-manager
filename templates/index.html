@@ -404,6 +404,159 @@
       text-transform: uppercase;
     }
 
+    .draw-builder {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      max-width: 680px;
+    }
+    .draw-builder h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .draw-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.55rem;
+    }
+    .draw-vs {
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      text-align: center;
+      width: 32px;
+    }
+    .draw-actions {
+      margin-top: 0.8rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    .team-link {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      padding: 0;
+      cursor: pointer;
+      text-align: inherit;
+      text-decoration: underline;
+      text-decoration-color: rgba(232,234,240,0.35);
+      text-underline-offset: 2px;
+    }
+    .team-link:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 10, 0.78);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal.active { display: flex; }
+    .modal-card {
+      width: min(960px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+    @media (max-width: 860px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+    .profile-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem;
+    }
+    .profile-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-bottom: 0.45rem;
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+      font-size: 0.86rem;
+      padding: 0.28rem 0;
+      border-bottom: 1px solid rgba(42,45,54,0.45);
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+    }
+    .profile-list-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+      border-bottom: 1px solid rgba(42,45,54,0.45);
+      padding-bottom: 0.3rem;
+    }
+    .profile-list-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .profile-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .profile-link:hover { text-decoration: underline; }
+    .teams-search {
+      width: min(520px, 100%);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.55rem 0.85rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .teams-search:focus { border-color: var(--accent); }
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 1100px) { .teams-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 900px)  { .teams-grid { grid-template-columns: 1fr; } }
+
     /* ── MOTM BANNERS ── */
     .motm-banner {
       border-radius: 6px;
@@ -436,7 +589,7 @@
       gap: 1rem;
     }
     @media (max-width: 1100px) { .groups-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 650px)  { .groups-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 900px)  { .groups-grid { grid-template-columns: 1fr; } }
 
     /* ── STATES ── */
     .loading {
@@ -482,9 +635,10 @@
 <header>
   <div class="logo">⚽ FLM</div>
   <nav>
-    <button class="nav-btn active" onclick="showSection('standings', this)">Standings</button>
-    <button class="nav-btn" onclick="showSection('motm', this)">MOTM</button>
-    <button class="nav-btn" onclick="showSection('cup', this)">League Cup</button>
+    <button class="nav-btn active" data-nav="standings" onclick="showSection('standings', this)">Standings</button>
+    <button class="nav-btn" data-nav="motm" onclick="showSection('motm', this)">MOTM</button>
+    <button class="nav-btn" data-nav="cup" onclick="showSection('cup', this)">League Cup</button>
+    <button class="nav-btn" data-nav="teams" onclick="showSection('teams', this)">Teams</button>
   </nav>
 </header>
 
@@ -558,6 +712,32 @@
   </div>
 </div>
 
+<div id="section-teams" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">Teams</div>
+      <div class="section-sub">Browse by league</div>
+    </div>
+    <div class="controls">
+      <input id="teams-search" class="teams-search" type="text" placeholder="Search team name..." oninput="filterTeamsList()">
+    </div>
+    <div id="teams-content"><div class="loading">Loading</div></div>
+  </div>
+</div>
+
+<div id="section-team-profile" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-title" style="font-size:1.6rem" id="profile-title">Team Profile</div>
+        <div class="section-sub" id="profile-subtitle"></div>
+      </div>
+      <button class="btn btn-secondary" onclick="goToTeams()">Back To Teams</button>
+    </div>
+    <div id="team-profile-content"><div class="loading">Loading</div></div>
+  </div>
+</div>
+
 <script>
   // ── MONTH END DATES ──────────────────────────────────────────────────────────
   const MONTH_END = {
@@ -571,14 +751,101 @@
   }
 
   // ── NAVIGATION ───────────────────────────────────────────────────────────────
+  function setNavActive(navKey) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    if (!navKey) return;
+    const btn = document.querySelector(`.nav-btn[data-nav="${navKey}"]`);
+    if (btn) btn.classList.add('active');
+  }
+
+  function goToTeams() {
+    showSection('teams', document.querySelector('.nav-btn[data-nav="teams"]'));
+  }
+
   function showSection(name, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
-    if (btn) btn.classList.add('active');
+    if (btn && btn.dataset.nav) setNavActive(btn.dataset.nav);
     if (name === 'standings') loadStandings();
     if (name === 'motm')      loadMOTM();
-    if (name === 'cup')       initCup();
+    if (name === 'cup') {
+      drawAdminKeyByRound = {};
+      initCup();
+    }
+    if (name === 'teams')     loadTeams();
+  }
+
+  function teamLink(label, teamId) {
+    if (!teamId) return label;
+    return `<button class="team-link" onclick="openTeamProfile('${teamId}')">${label}</button>`;
+  }
+
+  function formatOrdinal(n) {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return n;
+    const mod100 = v % 100;
+    if (mod100 >= 11 && mod100 <= 13) return `${v}th`;
+    const mod10 = v % 10;
+    if (mod10 === 1) return `${v}st`;
+    if (mod10 === 2) return `${v}nd`;
+    if (mod10 === 3) return `${v}rd`;
+    return `${v}th`;
+  }
+
+  // ── TEAMS ────────────────────────────────────────────────────────────────────
+  let teamsDirectoryData = null;
+
+  async function loadTeams(force = false) {
+    const el = document.getElementById('teams-content');
+    if (!force && teamsDirectoryData) {
+      renderTeamsDirectory();
+      return;
+    }
+    el.innerHTML = '<div class="loading">Loading</div>';
+    try {
+      const res = await fetch('/api/teams');
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error);
+      teamsDirectoryData = json.data;
+      renderTeamsDirectory();
+    } catch (e) {
+      el.innerHTML = `<div class="error">Error: ${e.message}</div>`;
+    }
+  }
+
+  function filterTeamsList() {
+    if (!teamsDirectoryData) return;
+    renderTeamsDirectory();
+  }
+
+  function renderTeamsDirectory() {
+    const el = document.getElementById('teams-content');
+    if (!teamsDirectoryData) {
+      el.innerHTML = '<div class="empty">No team data</div>';
+      return;
+    }
+    const query = (document.getElementById('teams-search')?.value || '').trim().toLowerCase();
+    const leagueOrder = ['premier_league', 'championship', 'league_one'];
+    const cards = leagueOrder
+      .filter(key => teamsDirectoryData[key])
+      .map(key => teamsDirectoryData[key])
+      .map(league => {
+      const teams = league.teams.filter(t => !query || t.teamName.toLowerCase().includes(query));
+      const rows = teams.map(t => `<tr>
+        <td class="rank">${t.rank}</td>
+        <td>${teamLink(t.teamName, t.teamId)}</td>
+        <td class="num">${t.pts}</td>
+      </tr>`).join('');
+      const body = rows || '<tr><td colspan="3" class="empty" style="padding:1rem">No matching teams</td></tr>';
+      return `<div class="table-wrap">
+        <div class="table-title">${league.league_name}</div>
+        <div class="table-scroll"><table>
+          <thead><tr><th>#</th><th>Team</th><th class="num">Pts</th></tr></thead>
+          <tbody>${body}</tbody>
+        </table></div>
+      </div>`;
+    }).join('');
+    el.innerHTML = `<div class="teams-grid">${cards}</div>`;
   }
 
   // ── STANDINGS ────────────────────────────────────────────────────────────────
@@ -613,7 +880,7 @@
       const pdColor = t.pd >= 0 ? 'var(--accent)' : 'var(--accent2)';
       return `<tr>
         <td class="rank ${rankClass}">${t.rank}</td>
-        <td>${t.teamName}${badge}</td>
+        <td>${teamLink(t.teamName, t.teamId)}${badge}</td>
         <td class="num">${t.w}</td>
         <td class="num">${t.d}</td>
         <td class="num">${t.l}</td>
@@ -690,7 +957,7 @@
 
     const rows = data.results.map(r => `<tr>
       <td class="rank ${r.rank===1?'rank-1':''}">${r.rank}</td>
-      <td>${r.team}</td>
+      <td>${teamLink(r.team, r.teamId)}</td>
       <td class="num">${r.pts}</td>
       <td class="num">${r.w}</td>
       <td class="num">${r.d}</td>
@@ -715,6 +982,35 @@
 
   // ── CUP ──────────────────────────────────────────────────────────────────────
   let cupInitialised = false;
+  const DRAW_ENABLED_ROUNDS = new Set(['quarter_final', 'semi_final', 'final']);
+  const DRAW_TEAMS_BY_ROUND = {};
+  let drawAdminKeyByRound = {};
+
+  function getAdminHeaders(round) {
+    const key = drawAdminKeyByRound[round] || '';
+    return key ? { 'X-Admin-Key': key } : {};
+  }
+
+  async function unlockDrawAdmin(round, triggerBtn = null) {
+    const key = prompt('Enter admin key to manage cup draws');
+    if (!key) return;
+
+    try {
+      const res = await fetch(`/api/cup/draw/options/${round}`, {
+        headers: { 'X-Admin-Key': key }
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Admin check failed');
+      drawAdminKeyByRound[round] = key;
+      if (triggerBtn) {
+        const wrap = triggerBtn.closest('.draw-unlock');
+        if (wrap) wrap.remove();
+      }
+      openDrawBuilder(round);
+    } catch (e) {
+      alert(`Admin access denied: ${e.message}`);
+    }
+  }
 
   async function initCup() {
     if (cupInitialised) return;
@@ -762,14 +1058,28 @@
   }
 
   function renderGroups(groups) {
+    const topWinnerIds = new Set(
+      Object.values(groups)
+        .map(teams => teams.find(t => t.rank === 1))
+        .filter(Boolean)
+        .sort((a, b) => (b.pts - a.pts) || (b.pf - a.pf))
+        .slice(0, 8)
+        .map(t => t.id)
+    );
+
     const cards = Object.entries(groups).map(([name, teams]) => {
       const rows = teams.map(t => {
         let rankClass = '', badge = '';
-        if (t.rank === 1) { rankClass = 'rank-1'; badge = '<span class="badge badge-gold">R16</span>'; }
-        else if (t.rank === 2) { rankClass = 'rank-2'; badge = '<span class="badge badge-green">PO</span>'; }
+        if (t.rank === 1 && topWinnerIds.has(t.id)) {
+          rankClass = 'rank-1';
+          badge = '<span class="badge badge-gold">R16</span>';
+        } else if (t.rank === 1 || t.rank === 2) {
+          rankClass = 'rank-2';
+          badge = '<span class="badge badge-green">PO</span>';
+        }
         return `<tr>
           <td class="rank ${rankClass}">${t.rank}</td>
-          <td>${t.name}${badge}</td>
+          <td>${teamLink(t.name, t.id)}${badge}</td>
           <td class="num">${t.pts}</td>
           <td class="num">${t.w}</td>
           <td class="num">${t.d}</td>
@@ -801,7 +1111,13 @@
       const json = await res.json();
       if (!json.success) throw new Error(json.error);
       if (!json.data.length) {
-        el.innerHTML = '<div class="empty">No matches drawn yet</div>';
+        const drawUi = DRAW_ENABLED_ROUNDS.has(round)
+          ? `<div class="draw-unlock" style="display:flex;justify-content:center;margin-top:0.75rem">
+               <button class="btn" onclick="unlockDrawAdmin('${round}', this)">Admin Unlock</button>
+             </div>
+             <div id="draw-builder-${round}" style="margin-top:0.75rem"></div>`
+          : '';
+        el.innerHTML = `<div class="empty">No matches drawn yet</div>${drawUi}`;
         return;
       }
       el.innerHTML = renderCupRound(json.data, round);
@@ -822,9 +1138,9 @@
 
       return `<div class="match-card">
         <div class="match-agg">
-          <div class="match-team home" style="${homeWin?'color:var(--gold)':''}">${m.home}</div>
+          <div class="match-team home" style="${homeWin?'color:var(--gold)':''}">${teamLink(m.home, m.home_id)}</div>
           <div class="match-score">${m.home_agg ?? 0} – ${m.away_agg ?? 0}</div>
-          <div class="match-team" style="${awayWin?'color:var(--gold)':''}">${m.away}</div>
+          <div class="match-team" style="${awayWin?'color:var(--gold)':''}">${teamLink(m.away, m.away_id)}</div>
         </div>
         <div class="match-leg-row">
           <span class="leg-label">GW${m.leg1_gw} · Leg 1</span>
@@ -845,7 +1161,7 @@
           <span class="leg-spacer" aria-hidden="true"></span>
         </div>
         ${m.winner
-          ? `<div class="match-winner-label" style="color:var(--gold)">⚡ ${m.winner} advances</div>`
+          ? `<div class="match-winner-label" style="color:var(--gold)">⚡ ${teamLink(m.winner, m.winner_id)} advances</div>`
           : `<div class="match-winner-label" style="color:var(--muted)">In progress</div>`}
       </div>`;
     }).join('');
@@ -858,11 +1174,212 @@
     </div>`;
   }
 
+  async function renderDrawBuilder(round) {
+    try {
+      const res = await fetch(`/api/cup/draw/options/${round}`, { headers: getAdminHeaders(round) });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error);
+      const teams = json.data.teams || [];
+      if (teams.length < 2) return '<div class="empty">No advanced teams available yet</div>';
+      if (teams.length % 2 !== 0) return '<div class="error">Advanced team count is invalid for draw creation</div>';
+
+      DRAW_TEAMS_BY_ROUND[round] = teams;
+      const opts = teams
+        .map(t => `<option value="${t.id}">${t.name}</option>`)
+        .join('');
+      const pairCount = teams.length / 2;
+      const rows = Array.from({ length: pairCount }).map((_, i) => `
+        <div class="draw-row">
+          <select id="draw-${round}-home-${i}" onchange="updateDrawOptions('${round}', ${pairCount})">
+            <option value="">Home team</option>
+            ${opts}
+          </select>
+          <div class="draw-vs">vs</div>
+          <select id="draw-${round}-away-${i}" onchange="updateDrawOptions('${round}', ${pairCount})">
+            <option value="">Away team</option>
+            ${opts}
+          </select>
+        </div>
+      `).join('');
+
+      return `
+        <div class="draw-builder">
+          <h3>Create ${round.replaceAll('_', ' ')}</h3>
+          ${rows}
+          <div class="draw-actions">
+            <button class="btn" onclick="saveDraw('${round}', ${pairCount})">Save Draw</button>
+          </div>
+        </div>
+      `;
+    } catch (e) {
+      if (`${e.message}`.toLowerCase().includes('unauthorized')) {
+        return `<div class="error">Admin access required to create draws</div>`;
+      }
+      return `<div class="error">Error loading draw options: ${e.message}</div>`;
+    }
+  }
+
+  async function openDrawBuilder(round) {
+    const mount = document.getElementById(`draw-builder-${round}`);
+    if (!mount) return;
+    mount.innerHTML = '<div class="loading">Loading</div>';
+    const html = await renderDrawBuilder(round);
+    mount.innerHTML = html;
+    const teams = DRAW_TEAMS_BY_ROUND[round] || [];
+    if (teams.length >= 2) updateDrawOptions(round, teams.length / 2);
+  }
+
+  function updateDrawOptions(round, pairCount) {
+    const teams = DRAW_TEAMS_BY_ROUND[round] || [];
+    if (!teams.length) return;
+
+    const selected = new Set();
+    for (let i = 0; i < pairCount; i++) {
+      const home = document.getElementById(`draw-${round}-home-${i}`)?.value;
+      const away = document.getElementById(`draw-${round}-away-${i}`)?.value;
+      if (home) selected.add(home);
+      if (away) selected.add(away);
+    }
+
+    for (let i = 0; i < pairCount; i++) {
+      const ids = [
+        `draw-${round}-home-${i}`,
+        `draw-${round}-away-${i}`
+      ];
+      for (const id of ids) {
+        const select = document.getElementById(id);
+        if (!select) continue;
+        const current = select.value;
+        const placeholder = id.includes('-home-') ? 'Home team' : 'Away team';
+        const options = teams
+          .filter(t => t.id === current || !selected.has(t.id))
+          .map(t => `<option value="${t.id}">${t.name}</option>`)
+          .join('');
+        select.innerHTML = `<option value="">${placeholder}</option>${options}`;
+        select.value = current;
+      }
+    }
+  }
+
+  async function saveDraw(round, pairCount) {
+    const matches = [];
+    const used = new Set();
+
+    for (let i = 0; i < pairCount; i++) {
+      const home = document.getElementById(`draw-${round}-home-${i}`).value;
+      const away = document.getElementById(`draw-${round}-away-${i}`).value;
+      if (!home || !away) {
+        alert('Please select all teams before saving the draw.');
+        return;
+      }
+      if (home === away) {
+        alert('A team cannot be drawn against itself.');
+        return;
+      }
+      if (used.has(home) || used.has(away)) {
+        alert('Each team can only appear once in the draw.');
+        return;
+      }
+      used.add(home);
+      used.add(away);
+      matches.push({ home, away });
+    }
+
+    try {
+      const res = await fetch(`/api/cup/draw/${round}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAdminHeaders(round) },
+        body: JSON.stringify({ matches })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Failed to save draw');
+      alert('Draw saved');
+      const el = document.getElementById('cup-' + round);
+      delete el.dataset.loaded;
+      loadCupRound(round);
+    } catch (e) {
+      alert(`Error saving draw: ${e.message}`);
+    }
+  }
+
   async function refreshCupRound(round) {
     const el = document.getElementById('cup-' + round);
     delete el.dataset.loaded;
     await fetch(`/api/cup/refresh/${round}`, { method: 'POST' });
     loadCupRound(round);
+  }
+
+  function fixtureLine(f) {
+    const venue = f.is_home ? 'vs' : '@';
+    const opp = f.opponent_rank ? `${f.opponent} (${formatOrdinal(f.opponent_rank)})` : f.opponent;
+    if (!f.played) return `GW${f.gw} · ${venue} ${opp}`;
+    return `GW${f.gw} · ${f.result} ${f.team_score}-${f.opp_score} ${venue} ${opp}`;
+  }
+
+  async function openTeamProfile(teamId) {
+    const content = document.getElementById('team-profile-content');
+    const title = document.getElementById('profile-title');
+    const subtitle = document.getElementById('profile-subtitle');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-team-profile').classList.add('active');
+    setNavActive('teams');
+    content.innerHTML = '<div class="loading">Loading</div>';
+    title.textContent = 'Team Profile';
+    subtitle.textContent = '';
+
+    try {
+      const res = await fetch(`/api/team/profile/${teamId}`);
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Failed to load profile');
+      const p = json.data;
+      title.textContent = p.team.name;
+      subtitle.textContent = `${p.team.league_name} · ${formatOrdinal(p.league.rank)}`;
+
+      const last5 = p.fixtures.last5.length
+        ? p.fixtures.last5.map(f => `<div class="profile-list-item"><span>${fixtureLine(f)}</span></div>`).join('')
+        : '<div class="empty" style="padding:0.8rem 0">No results yet</div>';
+      const next5 = p.fixtures.next5.length
+        ? p.fixtures.next5.map(f => `<div class="profile-list-item"><span>${fixtureLine(f)}</span></div>`).join('')
+        : '<div class="empty" style="padding:0.8rem 0">No upcoming fixtures</div>';
+      const motmAwards = p.motm.awards.length
+        ? p.motm.awards.map(a => `<div class="profile-list-item"><span>${a.month}</span><span>${a.league}</span></div>`).join('')
+        : '<div class="empty" style="padding:0.8rem 0">No MOTM awards</div>';
+      const fantraxLink = p.team.fantrax_url
+        ? `<a class="profile-link" href="${p.team.fantrax_url}" target="_blank" rel="noopener noreferrer">Open public Fantrax page</a>`
+        : '<span class="empty" style="padding:0.8rem 0">Fantrax link unavailable</span>';
+
+      content.innerHTML = `
+        <div class="profile-grid">
+          <div class="profile-block">
+            <div class="profile-title">League Snapshot</div>
+            <div class="profile-row"><span>Position</span><span>${formatOrdinal(p.league.rank)}</span></div>
+            <div class="profile-row"><span>Played</span><span>${p.league.played}</span></div>
+            <div class="profile-row"><span>Total Points Scored</span><span>${p.league.pf.toFixed(2)}</span></div>
+            <div class="profile-row"><span>Average PPG</span><span>${p.league.avg_ppg.toFixed(2)}</span></div>
+            <div class="profile-row"><span>Cup Progress</span><span>${p.cup.progress}</span></div>
+          </div>
+          <div class="profile-block">
+            <div class="profile-title">Manager Of The Month</div>
+            <div class="profile-row"><span>Total Awards</span><span>${p.motm.count}</span></div>
+            <div class="profile-list">${motmAwards}</div>
+          </div>
+          <div class="profile-block">
+            <div class="profile-title">Last 5 Results</div>
+            <div class="profile-list">${last5}</div>
+          </div>
+          <div class="profile-block">
+            <div class="profile-title">Next 5 Fixtures</div>
+            <div class="profile-list">${next5}</div>
+          </div>
+          <div class="profile-block" style="grid-column:1 / -1">
+            <div class="profile-title">Links</div>
+            ${fantraxLink}
+          </div>
+        </div>
+      `;
+    } catch (e) {
+      content.innerHTML = `<div class="error">Error loading profile: ${e.message}</div>`;
+    }
   }
 
   // ── INIT ─────────────────────────────────────────────────────────────────────

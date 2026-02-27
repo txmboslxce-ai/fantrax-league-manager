@@ -1,6 +1,12 @@
 import json
 from fantrax import get_score_by_id, get_league_for_id, get_all_team_id_maps
 
+DRAW_SOURCE_ROUND = {
+    "quarter_final": "round_of_16",
+    "semi_final": "quarter_final",
+    "final": "semi_final"
+}
+
 def load_cup_config():
     with open("config/cup.json") as f:
         return json.load(f)
@@ -115,6 +121,78 @@ def get_full_cup_status(config, id_map):
         "quarter_final": config["quarter_final"],
         "semi_final": config["semi_final"],
         "final": config["final"]
+    }
+
+def get_draw_options(config, round_name, id_map):
+    source_round = DRAW_SOURCE_ROUND.get(round_name)
+    if not source_round:
+        return {"teams": [], "match_count": 0}
+
+    source_matches = config.get(source_round, {}).get("matches", [])
+    winners = [m.get("winner") for m in source_matches if m.get("winner")]
+    seen = set()
+    ordered_unique = []
+    for team_id in winners:
+        if team_id not in seen:
+            seen.add(team_id)
+            ordered_unique.append(team_id)
+
+    teams = [{"id": tid, "name": id_map.get(tid, tid)} for tid in ordered_unique]
+    return {"teams": teams, "match_count": len(teams) // 2}
+
+def get_team_cup_progress(config, team_id, id_map):
+    groups = calculate_group_standings(config, id_map)
+    group_rank = None
+    group_name = None
+    for g_name, standings in groups.items():
+        for entry in standings:
+            if entry["id"] == team_id:
+                group_rank = entry["rank"]
+                group_name = g_name
+                break
+        if group_rank is not None:
+            break
+
+    rounds = ["playoff", "round_of_16", "quarter_final", "semi_final", "final"]
+    round_labels = {
+        "playoff": "Playoff",
+        "round_of_16": "Round of 16",
+        "quarter_final": "Quarter Final",
+        "semi_final": "Semi Final",
+        "final": "Final"
+    }
+
+    progress = "Group Stage"
+    for round_name in rounds:
+        matches = config.get(round_name, {}).get("matches", [])
+        team_matches = [m for m in matches if team_id in (m.get("home"), m.get("away"))]
+        if not team_matches:
+            continue
+
+        label = round_labels[round_name]
+        unresolved = any(m.get("winner") is None for m in team_matches)
+        if unresolved:
+            progress = label
+            break
+
+        won_all = all(m.get("winner") == team_id for m in team_matches)
+        if won_all:
+            if round_name == "final":
+                progress = "Winner"
+                break
+            next_round = rounds[rounds.index(round_name) + 1]
+            progress = round_labels[next_round]
+        else:
+            progress = f"Defeated in {label}"
+            break
+
+    if progress == "Group Stage" and group_rank and group_rank > 2:
+        progress = "Defeated in Group Stage"
+
+    return {
+        "group": group_name,
+        "group_rank": group_rank,
+        "progress": progress
     }
 
 if __name__ == "__main__":

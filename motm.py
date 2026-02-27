@@ -67,14 +67,15 @@ def _extract_gameweek_end(gw_data):
     walk(gw_data)
     return max(end_candidates) if end_candidates else None
 
-def calculate_motm(league_key, month):
+def calculate_motm(league_key, month, schedule=None):
     config = load_motm_config()
     
     if month not in config:
         return {"error": f"Month '{month}' not found in config"}
     
     gameweeks = config[month]
-    schedule = get_schedule(league_key)
+    if schedule is None:
+        schedule = get_schedule(league_key)
     
     team_stats = {}
     month_complete = True
@@ -87,15 +88,17 @@ def calculate_motm(league_key, month):
         gw_end = _extract_gameweek_end(gw_data)
         for row in gw_data["rows"]:
             cells = row["cells"]
+            away_id = cells[0].get("teamId") or cells[0]["content"]
             away_team = cells[0]["content"]
             away_score = float(cells[1]["content"]) if cells[1]["content"] else 0.0
+            home_id = cells[2].get("teamId") or cells[2]["content"]
             home_team = cells[2]["content"]
             home_score = float(cells[3]["content"]) if cells[3]["content"] else 0.0
 
             # Initialise teams
-            for team in [away_team, home_team]:
-                if team not in team_stats:
-                    team_stats[team] = {"pts": 0, "w": 0, "d": 0, "l": 0, "pf": 0.0, "pa": 0.0}
+            for team_id, team_name in [(away_id, away_team), (home_id, home_team)]:
+                if team_id not in team_stats:
+                    team_stats[team_id] = {"team": team_name, "pts": 0, "w": 0, "d": 0, "l": 0, "pf": 0.0, "pa": 0.0}
 
             # Fantrax represents unplayed fixtures as 0-0; ignore for MOTM stats
             if away_score == 0.0 and home_score == 0.0:
@@ -104,24 +107,24 @@ def calculate_motm(league_key, month):
 
             # Award points
             if away_score > home_score:
-                team_stats[away_team]["pts"] += 3
-                team_stats[away_team]["w"] += 1
-                team_stats[home_team]["l"] += 1
+                team_stats[away_id]["pts"] += 3
+                team_stats[away_id]["w"] += 1
+                team_stats[home_id]["l"] += 1
             elif home_score > away_score:
-                team_stats[home_team]["pts"] += 3
-                team_stats[home_team]["w"] += 1
-                team_stats[away_team]["l"] += 1
+                team_stats[home_id]["pts"] += 3
+                team_stats[home_id]["w"] += 1
+                team_stats[away_id]["l"] += 1
             else:
-                team_stats[away_team]["pts"] += 1
-                team_stats[home_team]["pts"] += 1
-                team_stats[away_team]["d"] += 1
-                team_stats[home_team]["d"] += 1
+                team_stats[away_id]["pts"] += 1
+                team_stats[home_id]["pts"] += 1
+                team_stats[away_id]["d"] += 1
+                team_stats[home_id]["d"] += 1
 
             # Track PF and PA
-            team_stats[away_team]["pf"] += away_score
-            team_stats[away_team]["pa"] += home_score
-            team_stats[home_team]["pf"] += home_score
-            team_stats[home_team]["pa"] += away_score
+            team_stats[away_id]["pf"] += away_score
+            team_stats[away_id]["pa"] += home_score
+            team_stats[home_id]["pf"] += home_score
+            team_stats[home_id]["pa"] += away_score
 
         if gw_end is not None:
             if now_utc < gw_end:
@@ -140,7 +143,8 @@ def calculate_motm(league_key, month):
         "results": [
             {
                 "rank": i + 1,
-                "team": team,
+                "teamId": team_id,
+                "team": data["team"],
                 "pts": data["pts"],
                 "w": data["w"],
                 "d": data["d"],
@@ -149,7 +153,7 @@ def calculate_motm(league_key, month):
                 "pa": data["pa"],
                 "winner": i == 0
             }
-            for i, (team, data) in enumerate(ranked)
+            for i, (team_id, data) in enumerate(ranked)
         ]
     }
 

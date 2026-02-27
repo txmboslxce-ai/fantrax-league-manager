@@ -137,6 +137,67 @@ def get_current_round(cup_config):
                 break
     return current
 
+def get_team_fixtures(league_key, team_id, count=5):
+    schedule = get_schedule(league_key)
+    fixtures = []
+
+    for idx, gw_data in enumerate(schedule):
+        gw = idx + 1
+        for row in gw_data.get("rows", []):
+            cells = row["cells"]
+            away_id = cells[0].get("teamId")
+            home_id = cells[2].get("teamId")
+            if team_id not in (away_id, home_id):
+                continue
+
+            away_name = normalize(cells[0].get("content", ""))
+            home_name = normalize(cells[2].get("content", ""))
+            away_score = float(cells[1]["content"]) if cells[1]["content"] else 0.0
+            home_score = float(cells[3]["content"]) if cells[3]["content"] else 0.0
+            played = not (away_score == 0.0 and home_score == 0.0)
+
+            is_home = team_id == home_id
+            team_name = home_name if is_home else away_name
+            opponent = away_name if is_home else home_name
+            opponent_id = away_id if is_home else home_id
+            team_score = home_score if is_home else away_score
+            opp_score = away_score if is_home else home_score
+
+            result = None
+            if played:
+                if team_score > opp_score:
+                    result = "W"
+                elif team_score < opp_score:
+                    result = "L"
+                else:
+                    result = "D"
+
+            fixtures.append({
+                "gw": gw,
+                "team": team_name,
+                "opponent": opponent,
+                "opponent_id": opponent_id,
+                "is_home": is_home,
+                "team_score": team_score if played else None,
+                "opp_score": opp_score if played else None,
+                "played": played,
+                "result": result
+            })
+            break
+
+    played = [f for f in fixtures if f["played"]]
+    upcoming = [f for f in fixtures if not f["played"]]
+    return {
+        "last5": played[-count:][::-1],
+        "next5": upcoming[:count]
+    }
+
+def get_public_team_url(league_key, team_id):
+    league_id = LEAGUES.get(league_key)
+    if not league_id:
+        return None
+    return f"https://www.fantrax.com/fantasy/league/{league_id}/team/roster;teamId={team_id}"
+
 if __name__ == "__main__":
     print("Testing standings...")
     standings = get_standings("premier_league")
