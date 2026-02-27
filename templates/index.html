@@ -54,6 +54,13 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+    .logo-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+    }
 
     nav {
       display: flex;
@@ -689,6 +696,255 @@
     @media (max-width: 1100px) { .groups-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 900px)  { .groups-grid { grid-template-columns: 1fr; } }
 
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .home-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+    .home-block-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .leaders-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+    .leader-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem;
+    }
+    .leader-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .leader-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .leader-row {
+      display: grid;
+      grid-template-columns: 24px 1fr auto auto;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    .leader-row.motm-row {
+      grid-template-columns: 24px 1fr auto auto auto;
+    }
+    .leader-rank {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .leader-pts {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .leader-pf {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .leader-record {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .home-cup-list,
+    .home-motm-grid,
+    .home-gw-grid {
+      display: grid;
+      gap: 0.65rem;
+    }
+    .home-cup-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .home-cup-card,
+    .home-motm-card,
+    .home-gw-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+    }
+    .home-cup-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px minmax(0, 1fr);
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.86rem;
+    }
+    .home-cup-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .home-cup-team {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .home-cup-line .home-cup-team:first-child {
+      text-align: right;
+    }
+    .home-cup-line .home-cup-team:last-child {
+      text-align: left;
+    }
+    .home-cup-winner {
+      margin-top: 0.35rem;
+      text-align: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .home-cup-winner.pending {
+      color: var(--muted);
+    }
+    .home-motm-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .leader-badge {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.1rem 0.4rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .leader-badge.winner {
+      color: var(--gold);
+      border-color: rgba(255, 209, 102, 0.5);
+      background: rgba(255, 209, 102, 0.12);
+    }
+    .leader-badge.leader {
+      color: var(--accent);
+      border-color: rgba(0, 229, 160, 0.45);
+      background: rgba(0, 229, 160, 0.1);
+    }
+    .home-motm-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-motm-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+    .home-motm-league {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .home-motm-status {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .home-motm-team {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+    .home-motm-pts {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .home-gw-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-gw-head {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .home-gw-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .home-gw-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px minmax(0, 1fr);
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.84rem;
+    }
+    .home-gw-row .home-team-home,
+    .home-gw-row .home-team-away {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .home-gw-row .home-team-home { text-align: right; }
+    .home-gw-row .home-team-away { text-align: left; }
+    .home-gw-score {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      text-align: center;
+    }
+    @media (max-width: 1100px) {
+      .leaders-grid,
+      .home-motm-grid,
+      .home-gw-grid {
+        grid-template-columns: 1fr;
+      }
+      .home-cup-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* ── STATES ── */
     .loading {
       text-align: center;
@@ -731,9 +987,10 @@
 
 <!-- Fixed top nav — never scrolls -->
 <header>
-  <div class="logo">⚽ FLM</div>
+  <button class="logo logo-btn" type="button" onclick="goHome()">⚽ FLM</button>
   <nav>
-    <button class="nav-btn active" data-nav="standings" onclick="showSection('standings', this)">Standings</button>
+    <button class="nav-btn active" data-nav="home" onclick="showSection('home', this)">Home</button>
+    <button class="nav-btn" data-nav="standings" onclick="showSection('standings', this)">Standings</button>
     <button class="nav-btn" data-nav="motm" onclick="showSection('motm', this)">MOTM</button>
     <button class="nav-btn" data-nav="cup" onclick="showSection('cup', this)">League Cup</button>
     <button class="nav-btn" data-nav="teams" onclick="showSection('teams', this)">Teams</button>
@@ -742,7 +999,34 @@
 </header>
 
 <!-- Each section fills the space below the header and scrolls independently -->
-<div id="section-standings" class="section active">
+<div id="section-home" class="section active">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">Home</div>
+      <div class="section-sub">At-a-glance dashboard</div>
+    </div>
+    <div class="home-grid">
+      <div class="home-block">
+        <div class="home-block-title">League Leaders</div>
+        <div id="home-leaders-content"><div class="loading">Loading</div></div>
+      </div>
+      <div class="home-block">
+        <div class="home-block-title">Manager Of The Month: <span id="home-motm-month">-</span></div>
+        <div id="home-motm-content"><div class="loading">Loading</div></div>
+      </div>
+      <div class="home-block">
+        <div class="home-block-title" id="home-cup-title">Latest Round</div>
+        <div id="home-cup-content"><div class="loading">Loading</div></div>
+      </div>
+      <div class="home-block">
+        <div class="home-block-title">Current Gameweek</div>
+        <div id="home-gw-content"><div class="loading">Loading</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="section-standings" class="section">
   <div class="container">
     <div class="section-header">
       <div class="section-title">Standings</div>
@@ -859,6 +1143,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+  const LEAGUE_ORDER = ['premier_league', 'championship', 'league_one'];
+  const LEAGUE_LABELS = {
+    premier_league: 'Premier League',
+    championship: 'Championship',
+    league_one: 'League One'
+  };
+  const MOTM_MONTHS = [
+    'August', 'September', 'October', 'November',
+    'December', 'January', 'February', 'March', 'April', 'May'
+  ];
+
   // ── MONTH END DATES ──────────────────────────────────────────────────────────
   const MONTH_END = {
     August:"2025-09-11", September:"2025-10-02", October:"2025-10-30",
@@ -878,6 +1173,10 @@
     if (btn) btn.classList.add('active');
   }
 
+  function goHome() {
+    showSection('home', document.querySelector('.nav-btn[data-nav="home"]'));
+  }
+
   function goToTeams() {
     showSection('teams', document.querySelector('.nav-btn[data-nav="teams"]'));
   }
@@ -886,6 +1185,7 @@
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
     if (btn && btn.dataset.nav) setNavActive(btn.dataset.nav);
+    if (name === 'home')      loadHome();
     if (name === 'standings') loadStandings();
     if (name === 'motm')      loadMOTM();
     if (name === 'cup') {
@@ -897,6 +1197,30 @@
       rulesAdminKey = '';
       loadRules();
     }
+  }
+
+  function formatRoundLabel(roundName) {
+    const labels = {
+      groups: 'Group Stage',
+      playoff: 'Playoff',
+      round_of_16: 'Round of 16',
+      quarter_final: 'Quarter Final',
+      semi_final: 'Semi Final',
+      final: 'Final'
+    };
+    return labels[roundName] || (roundName || '').replaceAll('_', ' ');
+  }
+
+  function formatScore(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '0';
+    const fixed = n.toFixed(2);
+    return fixed.endsWith('00') ? n.toFixed(0) : fixed.replace(/0$/, '');
+  }
+
+  function getCurrentMOTMMonth() {
+    const nowMonth = new Date().toLocaleString('en-US', { month: 'long' });
+    return MOTM_MONTHS.includes(nowMonth) ? nowMonth : 'May';
   }
 
   function teamLink(label, teamId) {
@@ -954,6 +1278,191 @@
       ? renderMarkdown(markdownText)
       : '<div class="empty" style="padding:1rem 0">No rules added yet</div>';
     normalizeRulesTables(display);
+  }
+
+  // ── HOME ─────────────────────────────────────────────────────────────────────
+  let homeLoaded = false;
+
+  async function loadHome(force = false) {
+    const leadersEl = document.getElementById('home-leaders-content');
+    const cupTitleEl = document.getElementById('home-cup-title');
+    const cupEl = document.getElementById('home-cup-content');
+    const motmMonthEl = document.getElementById('home-motm-month');
+    const motmEl = document.getElementById('home-motm-content');
+    const gwEl = document.getElementById('home-gw-content');
+
+    if (!leadersEl || !cupEl || !motmEl || !gwEl || !cupTitleEl || !motmMonthEl) return;
+    if (homeLoaded && !force) return;
+
+    leadersEl.innerHTML = '<div class="loading">Loading</div>';
+    cupEl.innerHTML = '<div class="loading">Loading</div>';
+    motmEl.innerHTML = '<div class="loading">Loading</div>';
+    gwEl.innerHTML = '<div class="loading">Loading</div>';
+
+    const month = getCurrentMOTMMonth();
+    motmMonthEl.textContent = month;
+
+    try {
+      const standingsReqs = LEAGUE_ORDER.map(leagueKey =>
+        fetch(`/api/standings/${leagueKey}`).then(r => r.json())
+      );
+      const motmReqs = LEAGUE_ORDER.map(leagueKey =>
+        fetch(`/api/motm/${leagueKey}/${month}`).then(r => r.json())
+      );
+      const cupRoundReq = fetch('/api/cup/current_round').then(r => r.json());
+      const gwReq = fetch('/api/gameweek/current').then(r => r.json());
+
+      const [standingsJson, motmJson, cupRoundJson, gameweekJson] = await Promise.all([
+        Promise.all(standingsReqs),
+        Promise.all(motmReqs),
+        cupRoundReq,
+        gwReq
+      ]);
+
+      const standingsByLeague = {};
+      standingsJson.forEach((json, idx) => {
+        if (json.success) standingsByLeague[LEAGUE_ORDER[idx]] = json.data;
+      });
+      leadersEl.innerHTML = renderHomeLeaders(standingsByLeague);
+
+      const motmByLeague = {};
+      motmJson.forEach((json, idx) => {
+        if (json.success) motmByLeague[LEAGUE_ORDER[idx]] = json.data;
+      });
+      motmEl.innerHTML = renderHomeMOTM(motmByLeague);
+
+      if (gameweekJson.success) {
+        gwEl.innerHTML = renderHomeGameweek(gameweekJson.data);
+      } else {
+        gwEl.innerHTML = `<div class="error">Error loading current gameweek: ${gameweekJson.error || 'Unknown error'}</div>`;
+      }
+
+      const roundName = cupRoundJson.success ? cupRoundJson.data : 'groups';
+      cupTitleEl.textContent = `Latest Round: ${formatRoundLabel(roundName)}`;
+      try {
+        const roundRes = await fetch(`/api/cup/round/${roundName}`);
+        const roundJson = await roundRes.json();
+        if (!roundJson.success) throw new Error(roundJson.error || 'Failed to load round');
+        cupEl.innerHTML = renderHomeCup(roundJson.data || []);
+      } catch (e) {
+        cupEl.innerHTML = `<div class="error">Error loading latest cup round: ${e.message}</div>`;
+      }
+
+      homeLoaded = true;
+    } catch (e) {
+      leadersEl.innerHTML = `<div class="error">Error loading league leaders: ${e.message}</div>`;
+      motmEl.innerHTML = `<div class="error">Error loading MOTM: ${e.message}</div>`;
+      cupEl.innerHTML = `<div class="error">Error loading cup round: ${e.message}</div>`;
+      gwEl.innerHTML = `<div class="error">Error loading current gameweek: ${e.message}</div>`;
+    }
+  }
+
+  function renderHomeLeaders(standingsByLeague) {
+    const cards = LEAGUE_ORDER.map(leagueKey => {
+      const rows = (standingsByLeague[leagueKey] || []).slice(0, 3);
+      const body = rows.length
+        ? rows.map(t => `
+          <div class="leader-row">
+            <span class="leader-rank">${t.rank}</span>
+            <span>${teamLink(t.teamName, t.teamId)}</span>
+            <span class="leader-record">W${t.w} D${t.d} L${t.l}</span>
+            <span class="leader-pts">${t.pts}pts</span>
+          </div>
+        `).join('')
+        : '<div class="empty" style="padding:0.8rem 0">No data</div>';
+      return `
+        <div class="leader-card">
+          <div class="leader-title">${LEAGUE_LABELS[leagueKey]}</div>
+          <div class="leader-list">${body}</div>
+        </div>
+      `;
+    }).join('');
+    return `<div class="leaders-grid">${cards}</div>`;
+  }
+
+  function renderHomeCup(matches) {
+    if (!matches.length) {
+      return '<div class="empty" style="padding:0.9rem 0">No matchups available yet</div>';
+    }
+    const cards = matches.map(m => {
+      return `
+        <div class="home-cup-card">
+          <div class="home-cup-line">
+            <span class="home-cup-team">${teamLink(m.home, m.home_id)}</span>
+            <span class="home-cup-score">${formatScore(m.home_agg || 0)} - ${formatScore(m.away_agg || 0)}</span>
+            <span class="home-cup-team">${teamLink(m.away, m.away_id)}</span>
+          </div>
+          <div class="home-cup-winner ${m.winner ? '' : 'pending'}">${m.winner ? 'Decided' : 'In progress'}</div>
+        </div>
+      `;
+    }).join('');
+    return `<div class="home-cup-list">${cards}</div>`;
+  }
+
+  function renderHomeMOTM(motmByLeague) {
+    const cards = LEAGUE_ORDER.map(leagueKey => {
+      const entry = motmByLeague[leagueKey];
+      const played = entry ? entry.results.filter(r => (r.w + r.d + r.l) > 0) : [];
+      if (!entry || !played.length) {
+        return `
+          <div class="home-motm-card">
+            <div class="home-motm-head">
+              <span class="home-motm-league">${LEAGUE_LABELS[leagueKey]}</span>
+              <span class="home-motm-status">No games</span>
+            </div>
+            <div class="empty" style="padding:0.8rem 0">No games played yet</div>
+          </div>
+        `;
+      }
+
+      const status = entry.month_complete ? 'Winner' : 'Leader';
+      const top3 = played.slice(0, 3);
+      const rows = top3.map((r, idx) => `
+        <div class="leader-row motm-row">
+          <span class="leader-rank">${r.rank}</span>
+          <span>${teamLink(r.team, r.teamId)}${idx === 0 ? ` <span class="leader-badge ${entry.month_complete ? 'winner' : 'leader'}">${status}</span>` : ''}</span>
+          <span class="leader-record">W${r.w} D${r.d} L${r.l}</span>
+          <span class="leader-pf">PF ${formatScore(r.pf)}</span>
+          <span class="leader-pts">${r.pts}pts</span>
+        </div>
+      `).join('');
+
+      return `
+        <div class="home-motm-card">
+          <div class="home-motm-head">
+            <span class="home-motm-league">${LEAGUE_LABELS[leagueKey]}</span>
+            <span class="home-motm-status">${entry.month_complete ? 'Complete' : 'In progress'}</span>
+          </div>
+          <div class="home-motm-list">${rows}</div>
+        </div>
+      `;
+    }).join('');
+    return `<div class="home-motm-grid">${cards}</div>`;
+  }
+
+  function renderHomeGameweek(gameweekByLeague) {
+    const cards = LEAGUE_ORDER.map(leagueKey => {
+      const data = gameweekByLeague[leagueKey];
+      const gwLabel = data && data.gw ? `GW${data.gw}` : 'No completed GW';
+      const matches = (data && data.matches) || [];
+      const rows = matches.length
+        ? matches.map(m => `
+          <div class="home-gw-row">
+            <span class="home-team-home">${m.home}</span>
+            <span class="home-gw-score">${formatScore(m.home_score)} - ${formatScore(m.away_score)}</span>
+            <span class="home-team-away">${m.away}</span>
+          </div>
+        `).join('')
+        : '<div class="empty" style="padding:0.8rem 0">No completed fixtures</div>';
+
+      return `
+        <div class="home-gw-card">
+          <div class="home-gw-head">${LEAGUE_LABELS[leagueKey]} · ${gwLabel}</div>
+          <div class="home-gw-list">${rows}</div>
+        </div>
+      `;
+    }).join('');
+    return `<div class="home-gw-grid">${cards}</div>`;
   }
 
   // ── RULES ────────────────────────────────────────────────────────────────────
@@ -1069,8 +1578,7 @@
       return;
     }
     const query = (document.getElementById('teams-search')?.value || '').trim().toLowerCase();
-    const leagueOrder = ['premier_league', 'championship', 'league_one'];
-    const cards = leagueOrder
+    const cards = LEAGUE_ORDER
       .filter(key => teamsDirectoryData[key])
       .map(key => teamsDirectoryData[key])
       .map(league => {
@@ -1627,8 +2135,7 @@
   }
 
   // ── INIT ─────────────────────────────────────────────────────────────────────
-  loadStandings();
-  loadMOTM();
+  loadHome();
 </script>
 </body>
 </html>

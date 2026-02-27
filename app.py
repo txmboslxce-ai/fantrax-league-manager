@@ -26,6 +26,54 @@ MONTHS = [
     "December", "January", "February", "March", "April", "May"
 ]
 
+def _to_float(value):
+    try:
+        return float(value) if value not in (None, "") else 0.0
+    except (TypeError, ValueError):
+        return 0.0
+
+def _latest_completed_gameweek(schedule):
+    for idx in range(len(schedule) - 1, -1, -1):
+        gw_data = schedule[idx]
+        rows = gw_data.get("rows", [])
+        if not rows:
+            continue
+
+        matches = []
+        complete = True
+        for row in rows:
+            cells = row.get("cells", [])
+            if len(cells) < 4:
+                complete = False
+                break
+
+            away_score = _to_float(cells[1].get("content"))
+            home_score = _to_float(cells[3].get("content"))
+            played = not (away_score == 0.0 and home_score == 0.0)
+            if not played:
+                complete = False
+                break
+
+            away_name = cells[0].get("content", "")
+            home_name = cells[2].get("content", "")
+            winner = None
+            if home_score > away_score:
+                winner = home_name
+            elif away_score > home_score:
+                winner = away_name
+
+            matches.append({
+                "away": away_name,
+                "away_score": away_score,
+                "home": home_name,
+                "home_score": home_score,
+                "winner": winner
+            })
+
+        if complete:
+            return idx + 1, matches
+    return None, []
+
 def _require_admin():
     expected = os.environ.get("CUP_ADMIN_KEY", "fantrax13")
     provided = request.headers.get("X-Admin-Key", "")
@@ -329,6 +377,22 @@ def api_team_profile(team_id):
                 "awards": awards
             }
         }
+        return jsonify({"success": True, "data": data})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
+@app.route("/api/gameweek/current")
+def api_current_gameweek():
+    try:
+        data = {}
+        for league_key, league_name in LEAGUES.items():
+            schedule = get_schedule(league_key)
+            gw, matches = _latest_completed_gameweek(schedule)
+            data[league_key] = {
+                "league_name": league_name,
+                "gw": gw,
+                "matches": matches
+            }
         return jsonify({"success": True, "data": data})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
