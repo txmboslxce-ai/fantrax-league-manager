@@ -557,6 +557,104 @@
     @media (max-width: 1100px) { .teams-grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 900px)  { .teams-grid { grid-template-columns: 1fr; } }
 
+    .rules-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      min-height: 260px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .rules-body {
+      font-size: 0.94rem;
+      line-height: 1.55;
+      color: var(--text);
+      white-space: normal;
+      word-break: break-word;
+    }
+    .rules-body h1, .rules-body h2, .rules-body h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 1rem 0 0.55rem;
+    }
+    .rules-body ul, .rules-body ol {
+      margin-left: 1.15rem;
+      margin-bottom: 0.8rem;
+    }
+    .rules-body p { margin-bottom: 0.75rem; }
+    .rules-body a { color: var(--accent); }
+    .rules-body table {
+      width: 100%;
+      min-width: 0;
+      table-layout: auto;
+      margin-bottom: 1rem;
+    }
+    .rules-body th,
+    .rules-body td {
+      white-space: normal;
+      word-break: break-word;
+    }
+    .rules-body table.rules-table-2col {
+      table-layout: fixed;
+    }
+    .rules-body table.rules-table-2col th:nth-child(1),
+    .rules-body table.rules-table-2col td:nth-child(1) {
+      width: 82%;
+    }
+    .rules-body table.rules-table-2col th:nth-child(2),
+    .rules-body table.rules-table-2col td:nth-child(2) {
+      width: 18%;
+      text-align: right;
+    }
+    .rules-editor {
+      margin-top: 0.9rem;
+      display: none;
+    }
+    .rules-editor.active { display: block; }
+    .rules-textarea {
+      width: 100%;
+      min-height: 260px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.8rem;
+      background: var(--surface2);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.86rem;
+      line-height: 1.4;
+      outline: none;
+    }
+    .rules-textarea:focus { border-color: var(--accent); }
+    .rules-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      margin-top: 0.65rem;
+    }
+    .rules-admin {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.8rem;
+    }
+    .btn-discreet {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .btn-discreet:hover {
+      color: var(--text);
+      border-color: #3a3e49;
+      background: rgba(58,62,73,0.22);
+    }
+
     /* ── MOTM BANNERS ── */
     .motm-banner {
       border-radius: 6px;
@@ -639,6 +737,7 @@
     <button class="nav-btn" data-nav="motm" onclick="showSection('motm', this)">MOTM</button>
     <button class="nav-btn" data-nav="cup" onclick="showSection('cup', this)">League Cup</button>
     <button class="nav-btn" data-nav="teams" onclick="showSection('teams', this)">Teams</button>
+    <button class="nav-btn" data-nav="rules" onclick="showSection('rules', this)">Rules</button>
   </nav>
 </header>
 
@@ -738,6 +837,27 @@
   </div>
 </div>
 
+<div id="section-rules" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">Rules</div>
+      <div class="section-sub">League rules and notes</div>
+    </div>
+    <div class="rules-wrap">
+      <div id="rules-display" class="rules-body"><div class="loading">Loading</div></div>
+      <div id="rules-editor-wrap" class="rules-editor">
+        <textarea id="rules-editor" class="rules-textarea" placeholder="Write rules in markdown..."></textarea>
+        <div class="rules-actions">
+          <button class="btn btn-secondary" onclick="cancelRulesEdit()">Cancel</button>
+          <button class="btn" onclick="saveRules()">Save Rules</button>
+        </div>
+      </div>
+      <div id="rules-admin-area" class="rules-admin"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
   // ── MONTH END DATES ──────────────────────────────────────────────────────────
   const MONTH_END = {
@@ -773,6 +893,10 @@
       initCup();
     }
     if (name === 'teams')     loadTeams();
+    if (name === 'rules') {
+      rulesAdminKey = '';
+      loadRules();
+    }
   }
 
   function teamLink(label, teamId) {
@@ -790,6 +914,126 @@
     if (mod10 === 2) return `${v}nd`;
     if (mod10 === 3) return `${v}rd`;
     return `${v}th`;
+  }
+
+  function escapeHtml(str) {
+    return `${str}`
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function renderMarkdown(md) {
+    if (window.marked && typeof window.marked.parse === 'function') {
+      return window.marked.parse(md || '');
+    }
+    return `<p>${escapeHtml(md || '').replaceAll('\n', '<br>')}</p>`;
+  }
+
+  function normalizeRulesTables(rootEl) {
+    if (!rootEl) return;
+    const tables = rootEl.querySelectorAll('table');
+    tables.forEach(table => {
+      table.classList.remove('rules-table-2col');
+      const headerCols = table.querySelectorAll('thead tr th').length;
+      let cols = headerCols;
+      if (!cols) {
+        const firstRow = table.querySelector('tr');
+        cols = firstRow ? firstRow.children.length : 0;
+      }
+      if (cols === 2) table.classList.add('rules-table-2col');
+    });
+  }
+
+  function setRulesDisplay(markdownText) {
+    const display = document.getElementById('rules-display');
+    if (!display) return;
+    display.innerHTML = markdownText.trim()
+      ? renderMarkdown(markdownText)
+      : '<div class="empty" style="padding:1rem 0">No rules added yet</div>';
+    normalizeRulesTables(display);
+  }
+
+  // ── RULES ────────────────────────────────────────────────────────────────────
+  let rulesAdminKey = '';
+  let rulesMarkdown = '';
+
+  async function loadRules() {
+    const display = document.getElementById('rules-display');
+    const editorWrap = document.getElementById('rules-editor-wrap');
+    const adminArea = document.getElementById('rules-admin-area');
+    if (!display || !editorWrap || !adminArea) return;
+
+    display.innerHTML = '<div class="loading">Loading</div>';
+    editorWrap.classList.remove('active');
+    adminArea.innerHTML = '';
+    try {
+      const res = await fetch('/api/rules');
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Failed to load rules');
+      rulesMarkdown = json.data.markdown || '';
+      setRulesDisplay(rulesMarkdown);
+      adminArea.innerHTML = '<button class="btn-discreet" onclick="unlockRulesAdmin(this)">Admin</button>';
+    } catch (e) {
+      display.innerHTML = `<div class="error">Error loading rules: ${e.message}</div>`;
+    }
+  }
+
+  async function unlockRulesAdmin(btn) {
+    const key = prompt('Enter admin key to edit rules');
+    if (!key) return;
+    try {
+      const res = await fetch('/api/rules/auth', {
+        headers: { 'X-Admin-Key': key }
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Unauthorized');
+      rulesAdminKey = key;
+      if (btn) btn.remove();
+      const editorWrap = document.getElementById('rules-editor-wrap');
+      const textarea = document.getElementById('rules-editor');
+      textarea.value = rulesMarkdown;
+      editorWrap.classList.add('active');
+      textarea.focus();
+    } catch (e) {
+      alert(`Admin access denied: ${e.message}`);
+    }
+  }
+
+  function cancelRulesEdit() {
+    rulesAdminKey = '';
+    document.getElementById('rules-editor-wrap').classList.remove('active');
+    document.getElementById('rules-admin-area').innerHTML = '<button class="btn-discreet" onclick="unlockRulesAdmin(this)">Admin</button>';
+  }
+
+  async function saveRules() {
+    if (!rulesAdminKey) {
+      alert('Admin key required');
+      return;
+    }
+    const markdown = document.getElementById('rules-editor').value;
+    try {
+      const res = await fetch('/api/rules', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': rulesAdminKey
+        },
+        body: JSON.stringify({ markdown })
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Failed to save');
+      rulesMarkdown = markdown;
+      setRulesDisplay(rulesMarkdown);
+      document.getElementById('rules-editor-wrap').classList.remove('active');
+      rulesAdminKey = '';
+      document.getElementById('rules-admin-area').innerHTML = '<button class="btn-discreet" onclick="unlockRulesAdmin(this)">Admin</button>';
+      alert('Rules saved');
+    } catch (e) {
+      alert(`Error saving rules: ${e.message}`);
+    }
   }
 
   // ── TEAMS ────────────────────────────────────────────────────────────────────

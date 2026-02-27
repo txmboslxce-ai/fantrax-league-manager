@@ -13,6 +13,7 @@ from cup import (
 )
 
 app = Flask(__name__)
+RULES_FILE = "config/rules.md"
 
 LEAGUES = {
     "premier_league": "Premier League",
@@ -25,12 +26,22 @@ MONTHS = [
     "December", "January", "February", "March", "April", "May"
 ]
 
-def _require_cup_admin():
+def _require_admin():
     expected = os.environ.get("CUP_ADMIN_KEY", "fantrax13")
     provided = request.headers.get("X-Admin-Key", "")
     if provided != expected:
         return False, ("Unauthorized", 403)
     return True, None
+
+def _load_rules_markdown():
+    if not os.path.exists(RULES_FILE):
+        return ""
+    with open(RULES_FILE, "r", encoding="utf-8") as f:
+        return f.read()
+
+def _save_rules_markdown(markdown_text):
+    with open(RULES_FILE, "w", encoding="utf-8") as f:
+        f.write(markdown_text)
 
 # ── MAIN PAGE ──────────────────────────────────────────────────────────────────
 
@@ -77,6 +88,44 @@ def api_motm(league_key, month):
     try:
         result = calculate_motm(league_key, month)
         return jsonify({"success": True, "data": result})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
+# ── RULES ──────────────────────────────────────────────────────────────────────
+
+@app.route("/api/rules")
+def api_rules():
+    try:
+        markdown = _load_rules_markdown()
+        updated_at = None
+        if os.path.exists(RULES_FILE):
+            updated_at = int(os.path.getmtime(RULES_FILE))
+        return jsonify({"success": True, "data": {"markdown": markdown, "updated_at": updated_at}})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
+@app.route("/api/rules/auth")
+def api_rules_auth():
+    ok, err = _require_admin()
+    if not ok:
+        message, status = err
+        return jsonify({"success": False, "error": message}), status
+    return jsonify({"success": True})
+
+@app.route("/api/rules", methods=["POST"])
+def api_rules_save():
+    try:
+        ok, err = _require_admin()
+        if not ok:
+            message, status = err
+            return jsonify({"success": False, "error": message}), status
+
+        payload = request.get_json(silent=True) or {}
+        markdown = payload.get("markdown", "")
+        if not isinstance(markdown, str):
+            return jsonify({"success": False, "error": "Invalid markdown payload"}), 400
+        _save_rules_markdown(markdown)
+        return jsonify({"success": True, "message": "Rules saved"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
@@ -137,7 +186,7 @@ def api_cup_refresh(round_name):
 def api_cup_draw(round_name):
     """Save a new draw for a future round"""
     try:
-        ok, err = _require_cup_admin()
+        ok, err = _require_admin()
         if not ok:
             message, status = err
             return jsonify({"success": False, "error": message}), status
@@ -196,7 +245,7 @@ def api_cup_draw(round_name):
 @app.route("/api/cup/draw/options/<round_name>")
 def api_cup_draw_options(round_name):
     try:
-        ok, err = _require_cup_admin()
+        ok, err = _require_admin()
         if not ok:
             message, status = err
             return jsonify({"success": False, "error": message}), status
