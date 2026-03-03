@@ -1,5 +1,5 @@
 import json
-from fantrax import get_score_by_id, get_league_for_id, get_all_team_id_maps
+from fantrax import get_score_by_id, get_league_for_id, get_all_team_id_maps, is_gameweek_complete
 
 DRAW_SOURCE_ROUND = {
     "quarter_final": "round_of_16",
@@ -62,9 +62,10 @@ def calculate_group_standings(config, id_map):
     return groups
 
 def get_cup_round_scores(config, round_name, id_map):
-    """Pull API scores for a cup round and update config"""
+    """Pull latest API scores for a cup round and update config."""
     round_data = config[round_name]
     updated = False
+    gw_complete_cache = {}
 
     for match in round_data["matches"]:
         home_id = match["home"]
@@ -72,39 +73,59 @@ def get_cup_round_scores(config, round_name, id_map):
         home_league = get_league_for_id(home_id, config)
         away_league = get_league_for_id(away_id, config)
 
-        # Leg 1
-        if match["leg1_home"] is None and home_league:
+        # Always refresh scores so live updates continue after the first write.
+        if home_league:
             score = get_score_by_id(home_id, match["leg1_gw"], home_league)
-            if score is not None:
+            if score is not None and match.get("leg1_home") != score:
                 match["leg1_home"] = score
                 updated = True
-        if match["leg1_away"] is None and away_league:
+        if away_league:
             score = get_score_by_id(away_id, match["leg1_gw"], away_league)
-            if score is not None:
+            if score is not None and match.get("leg1_away") != score:
                 match["leg1_away"] = score
                 updated = True
 
-        # Leg 2
-        if match.get("leg2_gw") and match["leg2_home"] is None and home_league:
+        if match.get("leg2_gw") and home_league:
             score = get_score_by_id(home_id, match["leg2_gw"], home_league)
-            if score is not None:
+            if score is not None and match.get("leg2_home") != score:
                 match["leg2_home"] = score
                 updated = True
-        if match.get("leg2_gw") and match["leg2_away"] is None and away_league:
+        if match.get("leg2_gw") and away_league:
             score = get_score_by_id(away_id, match["leg2_gw"], away_league)
-            if score is not None:
+            if score is not None and match.get("leg2_away") != score:
                 match["leg2_away"] = score
                 updated = True
 
-        # Calculate winner if both legs complete
-        if (match["leg1_home"] is not None and match["leg1_away"] is not None and
-                match.get("leg2_home") is not None and match.get("leg2_away") is not None):
-            home_agg = match["leg1_home"] + match["leg2_home"]
-            away_agg = match["leg1_away"] + match["leg2_away"]
+        leg2_gw = match.get("leg2_gw")
+        can_decide = False
+        if leg2_gw and home_league and away_league:
+            home_key = (home_league, leg2_gw)
+            away_key = (away_league, leg2_gw)
+            if home_key not in gw_complete_cache:
+                gw_complete_cache[home_key] = is_gameweek_complete(home_league, leg2_gw)
+            if away_key not in gw_complete_cache:
+                gw_complete_cache[away_key] = is_gameweek_complete(away_league, leg2_gw)
+            can_decide = gw_complete_cache[home_key] and gw_complete_cache[away_key]
+        elif leg2_gw is None:
+            can_decide = True
+
+        has_leg1_scores = match["leg1_home"] is not None and match["leg1_away"] is not None
+        has_leg2_scores = (match.get("leg2_home") is not None and match.get("leg2_away") is not None) if leg2_gw else True
+
+        # Calculate winner only once the deciding gameweek is complete.
+        if can_decide and has_leg1_scores and has_leg2_scores:
+            home_agg = (match["leg1_home"] or 0) + (match.get("leg2_home") or 0)
+            away_agg = (match["leg1_away"] or 0) + (match.get("leg2_away") or 0)
+            winner = None
             if home_agg > away_agg:
-                match["winner"] = home_id
+                winner = home_id
             elif away_agg > home_agg:
-                match["winner"] = away_id
+                winner = away_id
+            if match.get("winner") != winner:
+                match["winner"] = winner
+                updated = True
+        elif match.get("winner") is not None:
+            match["winner"] = None
             updated = True
 
     if updated:

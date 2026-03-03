@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import unicodedata
+from datetime import datetime, timezone
 
 LEAGUES = {
     "premier_league": "34wnxersmc1y1272",
@@ -11,6 +12,67 @@ LEAGUES = {
 
 def normalize(s):
     return unicodedata.normalize('NFC', s.strip()) if s else s
+
+def _parse_datetime(value):
+    if value is None:
+        return None
+
+    if isinstance(value, (int, float)):
+        # Fantrax-style epochs may be milliseconds.
+        ts = value / 1000 if value > 10_000_000_000 else value
+        try:
+            return datetime.fromtimestamp(ts, tz=timezone.utc)
+        except (ValueError, OSError):
+            return None
+
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return None
+
+        if raw.isdigit():
+            return _parse_datetime(int(raw))
+
+        iso = raw.replace("Z", "+00:00")
+        try:
+            dt = datetime.fromisoformat(iso)
+            return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+            try:
+                dt = datetime.strptime(raw, fmt)
+                return dt.replace(tzinfo=timezone.utc)
+            except ValueError:
+                continue
+
+    return None
+
+def _extract_gameweek_end(gw_data):
+    end_candidates = []
+
+    def walk(node):
+        if isinstance(node, dict):
+            for key, value in node.items():
+                lower = key.lower()
+                likely_end = (
+                    lower in {"enddate", "end_date", "endtime", "end_time", "end"}
+                    or ("end" in lower and ("date" in lower or "time" in lower))
+                    or "scoringperiodend" in lower
+                )
+                if likely_end:
+                    parsed = _parse_datetime(value)
+                    if parsed:
+                        end_candidates.append(parsed)
+                if isinstance(value, (dict, list)):
+                    walk(value)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item)
+
+    walk(gw_data)
+    return max(end_candidates) if end_candidates else None
 
 def get_schedule(league_key):
     league_id = LEAGUES[league_key]
@@ -119,6 +181,26 @@ def get_score_by_id(team_id, gw, league_key):
         if cells[2].get("teamId") == team_id:
             return float(cells[3]["content"]) if cells[3]["content"] else 0.0
     return None
+
+def is_gameweek_complete(league_key, gw):
+    schedule = get_schedule(league_key)
+    gw_data = schedule[gw - 1]
+
+    # Prefer explicit period end metadata when available.
+    end_time = _extract_gameweek_end(gw_data)
+    if end_time is not None:
+        return datetime.now(timezone.utc) >= end_time
+
+    # Fallback: treat all-0 fixtures as unplayed.
+    for row in gw_data.get("rows", []):
+        cells = row.get("cells", [])
+        if len(cells) < 4:
+            return False
+        away_score = float(cells[1]["content"]) if cells[1]["content"] else 0.0
+        home_score = float(cells[3]["content"]) if cells[3]["content"] else 0.0
+        if away_score == 0.0 and home_score == 0.0:
+            return False
+    return True
 
 def get_league_for_id(team_id, cup_config):
     for league_key, teams in cup_config["team_ids"].items():

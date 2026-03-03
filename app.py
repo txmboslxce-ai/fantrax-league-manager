@@ -1,6 +1,14 @@
 import os
 from flask import Flask, render_template, jsonify, request
-from fantrax import get_standings, get_all_team_id_maps, get_team_fixtures, get_public_team_url, get_league_for_id, get_schedule
+from fantrax import (
+    LEAGUES as FANTRAX_LEAGUE_IDS,
+    get_standings,
+    get_all_team_id_maps,
+    get_team_fixtures,
+    get_public_team_url,
+    get_league_for_id,
+    get_schedule
+)
 from motm import calculate_motm, load_motm_config
 from cup import (
     load_cup_config,
@@ -95,7 +103,12 @@ def _save_rules_markdown(markdown_text):
 
 @app.route("/")
 def index():
-    return render_template("index.html", leagues=LEAGUES, months=MONTHS)
+    return render_template(
+        "index.html",
+        leagues=LEAGUES,
+        months=MONTHS,
+        fantrax_league_ids=FANTRAX_LEAGUE_IDS
+    )
 
 # ── STANDINGS ──────────────────────────────────────────────────────────────────
 
